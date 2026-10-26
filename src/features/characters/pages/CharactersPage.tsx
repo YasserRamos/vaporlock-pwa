@@ -1,9 +1,11 @@
-﻿import { useMemo, useState } from "react";
+﻿
+import { useMemo, useState } from "react";
 import { Search, Users, X } from "lucide-react";
 import { characters } from "../data/characters";
 import type { Character, CharacterRole } from "../types/character.types";
 import CharacterCard from "../components/CharacterCard";
 import CharacterDetails from "../components/CharacterDetails";
+import "../css/charactersPage.css";
 
 const roles = [
   "Todos",
@@ -26,69 +28,95 @@ export default function CharactersPage() {
     const query = search.trim().toLocaleLowerCase();
 
     return characters.filter((character) => {
-      const matchesRole = role === "Todos" || character.role === (role as CharacterRole);
-      const matchesLevel = level === "Todos" || character.appearance.includes(level);
+      const matchesRole =
+        role === "Todos" || character.role === (role as CharacterRole);
+
+      const matchesLevel =
+        level === "Todos" || character.appearance.includes(level);
+
       const matchesSearch =
         !query ||
         character.name.toLocaleLowerCase().includes(query) ||
         character.id.toLocaleLowerCase().includes(query) ||
-        character.abilities.some((ability) => ability.toLocaleLowerCase().includes(query));
+        character.abilities.some((ability) =>
+          ability.toLocaleLowerCase().includes(query)
+        );
 
       return matchesRole && matchesLevel && matchesSearch;
     });
   }, [role, level, search]);
 
+  const resetFilters = () => {
+    setRole("Todos");
+    setLevel("Todos");
+    setSearch("");
+  };
+
   return (
-    <section id="personajes" className="border-y-4 border-black bg-[#191c25]">
-      <div className="mx-auto max-w-[1440px] px-5 py-16 sm:px-8 sm:py-20 lg:px-14">
-        <div className="mb-8 max-w-3xl">
-          <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-[#e38a42]">
-            Archivo de Metronia / Base de datos
+    <section id="personajes" className="characters-page">
+      <div className="characters-container">
+        <header className="characters-header">
+          <p className="characters-eyebrow">
+            <span className="characters-status-dot" />
+            ARCHIVO DE METRONIA / BASE DE DATOS
           </p>
-          <h2 className="comic-heading text-4xl text-[#f4e8cf] sm:text-5xl md:text-6xl">
-            PERSONAJES
-            <span className="text-[#bd4034]"> // </span>
-            AMENAZAS
+
+          <h2 className="characters-title">
+            PERSONAJES <span>//</span> AMENAZAS
           </h2>
-          <p className="mt-5 max-w-2xl text-sm leading-7 text-[#b8b1a3] sm:text-base">
+
+          <p className="characters-description">
             Consulta los personajes registrados de Vaporlock, sus roles,
             apariciones, acciones, habilidades y puntos de salud.
           </p>
-        </div>
+        </header>
 
-        <div className="mb-7 border-2 border-black bg-[#11131a] p-4 sm:p-5">
-          <label htmlFor="character-search" className="mb-2 block text-xs font-black uppercase tracking-widest text-[#e38a42]">
-            Buscar en los archivos
-          </label>
-          <div className="flex items-center gap-2 border-2 border-[#4a4d56] bg-[#1c202a] px-3">
-            <Search size={18} className="shrink-0 text-[#b8b1a3]" />
-            <input
-              id="character-search"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Nombre, ID o habilidad..."
-              className="min-h-12 w-full bg-transparent text-sm text-[#f4e8cf] outline-none placeholder:text-[#777b85]"
-            />
-            {search && (
-              <button type="button" onClick={() => setSearch("")} aria-label="Limpiar busqueda">
-                <X size={17} />
-              </button>
-            )}
+        <div className="characters-filters">
+          <div className="characters-search-section">
+            <label htmlFor="character-search">
+              <Search size={15} />
+              Buscar en los archivos
+            </label>
+
+            <div className="characters-search-box">
+              <Search
+                size={19}
+                className="characters-search-icon"
+                aria-hidden="true"
+              />
+
+              <input
+                id="character-search"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Nombre, ID o habilidad..."
+              />
+
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  aria-label="Limpiar búsqueda"
+                  className="characters-clear-search"
+                >
+                  <X size={17} />
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className="mt-5">
-            <p className="mb-2 text-xs font-black uppercase tracking-widest text-[#b8b1a3]">Filtrar por rol</p>
-            <div className="flex flex-wrap gap-2">
+          <div className="characters-filter-group">
+            <p>Clasificación por rol</p>
+
+            <div className="characters-filter-options">
               {roles.map((item) => (
                 <button
                   type="button"
                   key={item}
                   onClick={() => setRole(item)}
                   aria-pressed={role === item}
-                  className={`border-2 border-black px-3 py-2 text-xs font-black uppercase transition-colors ${
-                    role === item
-                      ? "bg-[#bd4034] text-white"
-                      : "bg-[#252b37] text-[#d2c8b7] hover:bg-[#343b51]"
+                  className={`characters-filter-button ${
+                    role === item ? "is-active role-active" : ""
                   }`}
                 >
                   {item}
@@ -97,19 +125,18 @@ export default function CharactersPage() {
             </div>
           </div>
 
-          <div className="mt-5">
-            <p className="mb-2 text-xs font-black uppercase tracking-widest text-[#b8b1a3]">Filtrar por aparición</p>
-            <div className="flex flex-wrap gap-2">
+          <div className="characters-filter-group">
+            <p>Registro de aparición</p>
+
+            <div className="characters-filter-options">
               {levels.map((item) => (
                 <button
                   type="button"
                   key={item}
                   onClick={() => setLevel(item)}
                   aria-pressed={level === item}
-                  className={`border-2 border-black px-3 py-2 text-xs font-black uppercase transition-colors ${
-                    level === item
-                      ? "bg-[#e38a42] text-[#11131a]"
-                      : "bg-[#252b37] text-[#d2c8b7] hover:bg-[#343b51]"
+                  className={`characters-filter-button ${
+                    level === item ? "is-active level-active" : ""
                   }`}
                 >
                   {item}
@@ -117,19 +144,32 @@ export default function CharactersPage() {
               ))}
             </div>
           </div>
+
+          {(search || role !== "Todos" || level !== "Todos") && (
+            <button
+              type="button"
+              className="characters-reset-filters"
+              onClick={resetFilters}
+            >
+              <X size={14} />
+              Restablecer filtros
+            </button>
+          )}
         </div>
 
-        <div className="mb-5 flex items-center justify-between gap-3">
-          <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#b8b1a3]">
-            <Users size={16} /> Archivos encontrados
+        <div className="characters-results-heading">
+          <p>
+            <Users size={16} />
+            Archivos encontrados
           </p>
-          <span className="border-2 border-black bg-[#e38a42] px-3 py-1 text-sm font-black text-[#11131a]">
+
+          <span className="characters-results-count">
             {filtered.length} / {characters.length}
           </span>
         </div>
 
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="characters-grid">
             {filtered.map((character) => (
               <CharacterCard
                 key={character.id}
@@ -139,19 +179,15 @@ export default function CharactersPage() {
             ))}
           </div>
         ) : (
-          <div className="border-2 border-dashed border-white/20 px-5 py-12 text-center">
-            <p className="text-lg font-black uppercase">Sin resultados</p>
-            <p className="mt-2 text-sm text-[#b8b1a3]">
-              No hay personajes que coincidan con esos filtros.
-            </p>
+          <div className="characters-empty">
+            <Search size={28} />
+            <h3>Sin resultados</h3>
+            <p>No hay personajes que coincidan con esos filtros.</p>
+
             <button
               type="button"
-              onClick={() => {
-                setRole("Todos");
-                setLevel("Todos");
-                setSearch("");
-              }}
-              className="comic-button mt-5 bg-[#f4e8cf] text-[#11131a]"
+              onClick={resetFilters}
+              className="characters-empty-button"
             >
               Limpiar filtros
             </button>

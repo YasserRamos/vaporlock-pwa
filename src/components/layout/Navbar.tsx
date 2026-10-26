@@ -2,7 +2,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X, ChevronRight } from "lucide-react";
-import VaporlockLogo from "../ui/VaporlockLogo";
+import VaporlockLogo from "../VaporlockLogo.ts/VaporlockLogo";
 
 const links = [
   { label: "Inicio", to: "/" },
