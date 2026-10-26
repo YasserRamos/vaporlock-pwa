@@ -77,23 +77,68 @@ export default function StoryPage() {
             </div>
           </div>
 
+
           <div className="story-hero-art" aria-hidden="true">
+            <div className="story-art-topline">
+              <span><span className="story-status-light" /> SISTEMA ACTIVO</span>
+              <span>MT-2943 / 001</span>
+            </div>
+
+            <div className="story-art-ruler story-art-ruler-left">
+              <span>100</span>
+              <span>075</span>
+              <span>050</span>
+              <span>025</span>
+            </div>
+
             <div className="story-art-orbit story-art-orbit-one" />
             <div className="story-art-orbit story-art-orbit-two" />
+
+            <div className="story-art-cross story-art-cross-one" />
+            <div className="story-art-cross story-art-cross-two" />
+
             <Cog className="story-art-gear story-art-gear-one" />
             <Cog className="story-art-gear story-art-gear-two" />
 
             <div className="story-art-core">
-              <Factory size={76} strokeWidth={1} />
+              <div className="story-art-core-frame">
+                <Factory size={82} strokeWidth={1} />
+                <div className="story-art-core-scan" />
+              </div>
               <span>METRONIA</span>
               <strong>2943</strong>
+              <small>SECTOR INDUSTRIAL</small>
+            </div>
+
+            <div className="story-art-side-label">
+              <span>COORDENADAS</span>
+              <strong>MET // 001</strong>
+              <span>ESTADO DEL SISTEMA</span>
+              <strong className="story-art-online">EN OPERACIÓN</strong>
+            </div>
+
+            <div className="story-art-bottom">
+              <div>
+                <span>01</span>
+                <strong>CIUDAD</strong>
+              </div>
+              <div>
+                <span>02</span>
+                <strong>INDUSTRIA</strong>
+              </div>
+              <div>
+                <span>03</span>
+                <strong>CONFLICTO</strong>
+              </div>
+              <Zap size={22} />
             </div>
 
             <div className="story-art-caption">
-              <span>SECTOR INDUSTRIAL</span>
+              <span>VAPORLOCK / ARCHIVO VISUAL</span>
               <span>ACCESO RESTRINGIDO</span>
             </div>
           </div>
+
         </header>
 
         <section className="story-timeline-section">

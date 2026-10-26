@@ -1,4 +1,5 @@
-﻿import {
+﻿
+import {
   Navigate,
   Route,
   Routes,
@@ -12,6 +13,8 @@ import CharactersPage from "../features/characters/pages/CharactersPage";
 import LevelsPage from "../features/levels/pages/LevelsPage";
 import MediaPage from "../features/media/pages/MediaPage";
 import TeamPage from "../features/team/pages/TeamPage";
+import NewsPage from "../features/news/pages/NewsPages";
+import NewsDetailPage from "../features/news/pages/NewsDetailPage";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -35,6 +38,13 @@ export default function AppRouter() {
         <Route path="/niveles" element={<LevelsPage />} />
         <Route path="/galeria" element={<MediaPage />} />
         <Route path="/equipo" element={<TeamPage />} />
+
+        <Route path="/noticias" element={<NewsPage />} />
+        <Route
+          path="/noticias/:slug"
+          element={<NewsDetailPage />}
+        />
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
