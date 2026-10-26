@@ -1,8 +1,9 @@
 
-/* =========================================
+/* =========================================================
    VAPORLOCK - HOME
-   Estética steampunk, industrial y editorial
-   ========================================= */
+   CSS consolidado: sin bloques duplicados ni parches acumulados.
+   Mantiene las clases de HomePage.tsx.
+   ========================================================= */
 
 .vl-home {
   --vl-bg: #11131a;
@@ -56,9 +57,9 @@
   background: var(--vl-copper);
 }
 
-/* =========================================
+/* =========================================================
    HERO
-   ========================================= */
+   ========================================================= */
 
 .vl-hero {
   position: relative;
@@ -67,10 +68,10 @@
   flex-direction: column;
   min-height: min(790px, calc(100svh - 72px));
   padding: 72px clamp(20px, 6vw, 88px) 0;
+  border-bottom: 4px solid #050608;
   background:
     radial-gradient(ellipse at 76% 42%, #273a3d 0%, transparent 35%),
     linear-gradient(120deg, #11131a 15%, #171923 65%, #20232b 100%);
-  border-bottom: 4px solid #050608;
 }
 
 .vl-hero__blueprint,
@@ -87,7 +88,7 @@
     linear-gradient(#70838a 1px, transparent 1px),
     linear-gradient(90deg, #70838a 1px, transparent 1px);
   background-size: 42px 42px;
-  mask-image: linear-gradient(90deg, transparent, black 60%, black);
+  mask-image: linear-gradient(90deg, transparent, #000 60%, #000);
 }
 
 .vl-hero__scanlines {
@@ -282,9 +283,9 @@
   box-shadow: 2px 2px 0 #090a0c;
 }
 
-/* =========================================
+/* =========================================================
    EXPEDIENTE DEL PROTAGONISTA
-   ========================================= */
+   ========================================================= */
 
 .vl-character {
   position: relative;
@@ -363,7 +364,12 @@
   transform: translateX(-50%);
   border: 2px solid #e9b16c99;
   border-radius: 50%;
-  background: radial-gradient(circle, #e8a968 0%, #b85b43 56%, #6b3840 100%);
+  background: radial-gradient(
+    circle,
+    #e8a968 0%,
+    #b85b43 56%,
+    #6b3840 100%
+  );
   box-shadow: 0 0 45px #e38a4244;
 }
 
@@ -599,7 +605,7 @@
   right: -5px;
   transform: rotate(7deg);
   background: var(--vl-red);
-  color: white;
+  color: #fff;
 }
 
 .vl-sticker--bottom {
@@ -638,39 +644,77 @@
   color: var(--vl-teal);
 }
 
-/* =========================================
+/* =========================================================
    UNIVERSO DE METRONIA
-   ========================================= */
+   ========================================================= */
 
 .vl-universe {
   position: relative;
-  padding: 100px clamp(20px, 6vw, 88px);
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(64px, 7vw, 88px) clamp(20px, 5vw, 72px) clamp(72px, 8vw, 96px);
+  border-top: 4px solid #090b10;
   background:
-    radial-gradient(ellipse at 0% 0%, #28232a 0%, transparent 40%),
-    #15161d;
+    radial-gradient(ellipse at 50% 0%, #283238 0%, transparent 50%),
+    linear-gradient(180deg, #151820 0%, #1b1b23 55%, #14151c 100%);
+}
+
+.vl-universe::before,
+.vl-specs::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.1;
+  background-image:
+    linear-gradient(#b68a60 1px, transparent 1px),
+    linear-gradient(90deg, #b68a60 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(180deg, transparent, #000 15%, #000 85%, transparent);
+}
+
+.vl-universe::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(85%, 900px);
+  height: 3px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--vl-copper), transparent);
+  box-shadow: 0 0 18px #e38a4240;
+  pointer-events: none;
 }
 
 .vl-section-heading {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 30px;
-  max-width: 1264px;
-  margin: 0 auto 55px;
+  gap: 28px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 34px;
 }
 
 .vl-section-heading .vl-eyebrow {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .vl-section-heading h2,
 .vl-cta__copy h2 {
-  margin-bottom: 0;
+  margin: 0;
   font-family: "Staatliches", Impact, sans-serif;
-  font-size: clamp(2.7rem, 5.5vw, 5.4rem);
   font-weight: 400;
-  line-height: 0.98;
   letter-spacing: 0.015em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.vl-section-heading h2 {
+  max-width: 760px;
+  font-size: clamp(2.8rem, 5.4vw, 5rem);
+  text-shadow: 3px 3px 0 #090b10;
 }
 
 .vl-section-heading h2 span {
@@ -678,12 +722,16 @@
 }
 
 .vl-section-heading__note {
-  margin-bottom: 4px;
-  color: #8e8993;
-  font-size: 0.68rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  line-height: 2;
+  flex-shrink: 0;
+  margin: 0 0 4px;
+  padding: 10px 13px;
+  border-left: 3px solid var(--vl-teal);
+  background: #10141bcc;
+  color: #c4bbb0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.8;
   text-align: right;
 }
 
@@ -692,57 +740,91 @@
 }
 
 .vl-universe__intro {
+  position: relative;
   display: grid;
-  grid-template-columns: 90px minmax(0, 760px);
+  grid-template-columns: 72px minmax(0, 1fr);
   align-items: center;
-  gap: 25px;
-  max-width: 1264px;
-  margin: 0 auto 55px;
-  padding: 28px;
-  border: 1px solid var(--vl-border);
-  border-left: 4px solid var(--vl-copper);
-  background: #1b1c25;
+  gap: 24px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 40px;
+  padding: clamp(22px, 3vw, 30px);
+  border: 1px solid #63513f;
+  border-left: 5px solid var(--vl-copper);
+  background: linear-gradient(110deg, #29252a 0%, #1c1e26 70%);
+  box-shadow: 5px 5px 0 #08090c;
+}
+
+.vl-universe__intro::before,
+.vl-universe__intro::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--vl-copper);
+}
+
+.vl-universe__intro::before {
+  top: 8px;
+  right: 8px;
+}
+
+.vl-universe__intro::after {
+  right: 8px;
+  bottom: 8px;
 }
 
 .vl-universe__mark {
   position: relative;
   display: grid;
   place-items: center;
-  width: 76px;
-  height: 76px;
-  border: 1px solid #8b6b50;
+  width: 68px;
+  height: 68px;
+  border: 2px solid #b78452;
+  background: #11151b;
   color: var(--vl-copper);
+  box-shadow: 4px 4px 0 #08090c;
+}
+
+.vl-universe__mark svg {
+  animation: vl-industrial-breathe 4s ease-in-out infinite;
 }
 
 .vl-universe__mark span {
   position: absolute;
   right: -8px;
   bottom: -8px;
-  padding: 4px 6px;
-  background: var(--vl-bg);
+  padding: 3px 7px;
+  border: 1px solid #b78452;
+  background: #11151b;
   color: var(--vl-teal);
   font-family: "Staatliches", Impact, sans-serif;
   font-size: 1.1rem;
 }
 
 .vl-universe__intro > p {
-  margin-bottom: 0;
-  color: var(--vl-muted);
-  font-size: 0.9rem;
-  line-height: 1.9;
+  max-width: 850px;
+  margin: 0;
+  color: #d0c7b8;
+  font-size: 1rem;
+  line-height: 1.85;
 }
 
 .vl-universe__intro strong {
-  color: var(--vl-cream);
+  color: #f6e3be;
 }
 
-/* Tarjetas informativas */
+/* =========================================================
+   TARJETAS DEL UNIVERSO
+   ========================================================= */
 
 .vl-feature-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
-  max-width: 1264px;
+  align-items: stretch;
+  gap: 20px;
+  width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -752,46 +834,15 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  min-height: 370px;
-  padding: 25px;
+  padding: clamp(22px, 2.2vw, 27px);
   overflow: hidden;
-  border: 1px solid #49414a;
-  background:
-    linear-gradient(145deg, #22232c 0%, #181921 75%);
+  border: 2px solid #4e4444;
+  background: linear-gradient(150deg, #282831 0%, #1c1e26 75%);
   box-shadow: 5px 5px 0 #08090c;
   transition:
-    transform 220ms ease,
+    transform 220ms steps(4, end),
     border-color 220ms ease,
     box-shadow 220ms ease;
-}
-
-.vl-feature::before {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 4px;
-  background: var(--feature-accent);
-  content: "";
-}
-
-.vl-feature::after {
-  position: absolute;
-  right: -30px;
-  bottom: -40px;
-  width: 120px;
-  height: 120px;
-  border: 1px solid var(--feature-accent);
-  opacity: 0.12;
-  content: "";
-  transform: rotate(45deg);
-  pointer-events: none;
-}
-
-.vl-feature:hover {
-  transform: translateY(-6px);
-  border-color: var(--feature-accent);
-  box-shadow: 7px 8px 0 #08090c;
 }
 
 .vl-feature--copper {
@@ -803,7 +854,50 @@
 }
 
 .vl-feature--red {
-  --feature-accent: #bd4034;
+  --feature-accent: #df6558;
+}
+
+.vl-feature::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 5px;
+  background: var(--feature-accent);
+  box-shadow: 0 0 14px #e38a4230;
+}
+
+.vl-feature::after {
+  content: "";
+  position: absolute;
+  right: -28px;
+  bottom: -28px;
+  width: 105px;
+  height: 105px;
+  border: 3px solid var(--feature-accent);
+  opacity: 0.09;
+  transform: rotate(45deg);
+  pointer-events: none;
+  animation: vl-card-glow 5s ease-in-out infinite;
+}
+
+.vl-feature:nth-child(2)::after {
+  animation-delay: -1.5s;
+}
+
+.vl-feature:nth-child(3)::after {
+  animation-delay: -3s;
+}
+
+.vl-feature:hover {
+  transform: translateY(-5px);
+  border-color: var(--feature-accent);
+  box-shadow: 6px 10px 0 #08090c;
+}
+
+.vl-feature:focus-within {
+  border-color: var(--feature-accent);
 }
 
 .vl-feature__top {
@@ -811,68 +905,84 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 35px;
+  margin-bottom: 25px;
 }
 
 .vl-feature__number {
   color: var(--feature-accent);
   font-family: "Staatliches", Impact, sans-serif;
-  font-size: 2.6rem;
+  font-size: 2.7rem;
   line-height: 1;
+  text-shadow: 2px 2px 0 #090b10;
 }
 
 .vl-feature__stamp {
-  padding: 6px 8px;
-  border: 1px solid #514b55;
-  color: #a6a0a8;
-  font-size: 0.52rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
+  padding: 7px 9px;
+  border: 1px dashed #76675d;
+  background: #15171d;
+  color: #d0c5b6;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  text-align: center;
 }
 
 .vl-feature__icon {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 68px;
-  height: 68px;
-  margin-bottom: 23px;
-  border: 1px solid var(--feature-accent);
-  background: #11131a;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 22px;
+  border: 2px solid var(--feature-accent);
+  background: #10141a;
   color: var(--feature-accent);
+  box-shadow: 4px 4px 0 #090b10;
+  transition:
+    transform 220ms steps(4, end),
+    background-color 220ms ease;
+}
+
+.vl-feature:hover .vl-feature__icon {
+  transform: translateY(-3px);
+  background: #292a30;
 }
 
 .vl-feature__icon-pixel {
   position: absolute;
-  right: -5px;
-  bottom: -5px;
-  width: 10px;
-  height: 10px;
+  right: -6px;
+  bottom: -6px;
+  width: 11px;
+  height: 11px;
+  border: 2px solid #10141a;
   background: var(--feature-accent);
 }
 
 .vl-feature__category {
-  margin-bottom: 9px;
+  margin-bottom: 10px;
   color: var(--feature-accent);
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   font-weight: 900;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
 }
 
 .vl-feature h3 {
-  margin-bottom: 14px;
+  margin-bottom: 13px;
+  color: #f6e8d0;
   font-family: "Staatliches", Impact, sans-serif;
-  font-size: clamp(1.6rem, 2.3vw, 2.05rem);
+  font-size: clamp(1.75rem, 2.3vw, 2.15rem);
   font-weight: 400;
-  line-height: 1.1;
+  line-height: 1.08;
+  text-wrap: balance;
 }
 
 .vl-feature__description {
   flex: 1;
-  margin-bottom: 25px;
-  color: var(--vl-muted);
-  font-size: 0.82rem;
+  margin-bottom: 24px;
+  color: #c9c1b6;
+  font-size: 0.98rem;
   line-height: 1.8;
 }
 
@@ -880,105 +990,154 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding-top: 15px;
-  border-top: 1px solid #ffffff1c;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #776b604d;
   color: var(--feature-accent);
-  font-size: 0.68rem;
+  font-size: 0.76rem;
   font-weight: 900;
-  letter-spacing: 0.05em;
-  transition: gap 180ms ease;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  transition: color 180ms ease;
 }
 
-.vl-feature__link:hover {
-  gap: 17px;
+.vl-feature__link svg {
+  flex-shrink: 0;
+  transition: transform 180ms ease;
 }
 
-/* =========================================
-   FICHA TÉCNICA
-   ========================================= */
+.vl-feature__link:hover svg,
+.vl-feature__link:focus-visible svg {
+  transform: translateX(5px);
+}
+
+.vl-feature__link:focus-visible {
+  outline: 2px solid var(--feature-accent);
+  outline-offset: 5px;
+}
+
+/* =========================================================
+   DATOS DEL PROYECTO / FICHA TÉCNICA
+   ========================================================= */
 
 .vl-specs {
-  padding: 55px clamp(20px, 6vw, 88px) 70px;
-  border-top: 1px solid #ffffff17;
-  border-bottom: 1px solid #ffffff17;
-  background: #101116;
+  position: relative;
+  isolation: isolate;
+  padding: 46px clamp(20px, 5vw, 72px) 58px;
+  overflow: hidden;
+  border-top: 1px solid #514536;
+  border-bottom: 1px solid #514536;
+  background:
+    radial-gradient(ellipse at 50% 0%, #27252a 0%, transparent 65%),
+    #14151c;
+}
+
+.vl-specs::before {
+  opacity: 0.09;
+  background-size: 28px 28px;
 }
 
 .vl-specs__heading {
   display: flex;
   align-items: center;
-  gap: 12px;
-  max-width: 1264px;
-  margin: 0 auto 30px;
-  color: var(--vl-muted);
-  font-size: 0.62rem;
+  gap: 14px;
+  max-width: 1160px;
+  margin: 0 auto 22px;
+  color: #d4b18a;
+  font-size: 0.72rem;
   font-weight: 900;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.15em;
+  line-height: 1.6;
 }
 
 .vl-specs__line {
   height: 1px;
   flex: 1;
-  background: #45414a;
+  background: linear-gradient(90deg, #63503e, #39343a);
 }
 
 .vl-specs__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  max-width: 1264px;
+  max-width: 1160px;
   margin: 0 auto;
-  border: 1px solid #39343a;
+  border: 1px solid #554638;
+  background: #1b1b23;
+  box-shadow: 5px 5px 0 #08090c;
 }
 
 .vl-spec {
   position: relative;
   min-width: 0;
-  padding: 28px 24px;
-  border-right: 1px solid #39343a;
-  background: #171820;
+  padding: 24px clamp(16px, 2vw, 26px);
+  border-right: 1px solid #514536;
+  background: linear-gradient(145deg, #23232b, #1a1b22);
+  transition: background 200ms ease;
 }
 
 .vl-spec:last-child {
   border-right: 0;
 }
 
+.vl-spec::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 3px;
+  background: var(--vl-copper);
+  transition: width 250ms ease;
+}
+
+.vl-spec:hover {
+  background: #29262a;
+}
+
+.vl-spec:hover::before {
+  width: 100%;
+}
+
 .vl-spec__index {
   display: block;
-  margin-bottom: 25px;
+  margin-bottom: 22px;
   color: var(--vl-copper);
   font-family: "Staatliches", Impact, sans-serif;
-  font-size: 1.8rem;
+  font-size: 2.1rem;
+  line-height: 1;
 }
 
 .vl-spec > p {
-  margin-bottom: 9px;
-  color: #8f8992;
-  font-size: 0.62rem;
+  margin-bottom: 10px;
+  color: #aaa1a1;
+  font-size: 0.72rem;
   font-weight: 900;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.12em;
+  line-height: 1.6;
 }
 
 .vl-spec h3 {
-  margin-bottom: 0;
-  color: var(--vl-cream);
-  font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+  margin: 0;
+  color: #f4e8cf;
+  font-size: clamp(0.95rem, 1.2vw, 1.12rem);
   font-weight: 800;
-  line-height: 1.5;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
 }
 
-/* =========================================
-   LLAMADA A LA ACCIÓN
-   ========================================= */
+/* =========================================================
+   CIERRE / LLAMADA A LA ACCIÓN
+   ========================================================= */
 
 .vl-cta {
   position: relative;
   isolation: isolate;
-  padding: 70px clamp(20px, 6vw, 88px) 0;
   overflow: hidden;
+  padding: 58px clamp(20px, 5vw, 72px) 0;
+  border-top: 3px solid #090b10;
   background:
-    radial-gradient(ellipse at 10% 60%, #3a2928 0%, transparent 50%),
-    #c57a3e;
+    radial-gradient(ellipse at 0% 65%, #65402f 0%, transparent 48%),
+    linear-gradient(115deg, #a96135 0%, #bf7945 48%, #9d5e38 100%);
   color: #17131a;
 }
 
@@ -986,63 +1145,72 @@
   position: absolute;
   z-index: -1;
   inset: 0;
-  opacity: 0.12;
+  opacity: 0.09;
+  pointer-events: none;
   background-image:
     linear-gradient(#17131a 1px, transparent 1px),
     linear-gradient(90deg, #17131a 1px, transparent 1px);
-  background-size: 30px 30px;
-  mask-image: linear-gradient(90deg, black, transparent);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(90deg, #000, transparent 85%);
 }
 
 .vl-cta__content {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: 76px minmax(0, 1fr) auto;
   align-items: center;
-  gap: clamp(20px, 4vw, 55px);
-  max-width: 1264px;
+  gap: clamp(22px, 3vw, 40px);
+  max-width: 1160px;
   margin: 0 auto;
-  padding-bottom: 65px;
+  padding-bottom: 48px;
 }
 
 .vl-cta__symbol {
   display: grid;
   place-items: center;
-  width: 90px;
-  height: 90px;
+  width: 68px;
+  height: 68px;
   border: 2px solid #17131a;
+  background: #e5a15e;
   color: #17131a;
-  transform: rotate(-5deg);
+  box-shadow: 4px 4px 0 #17131a;
+  transform: rotate(-4deg);
 }
 
 .vl-cta__copy .vl-eyebrow {
-  color: #30201a;
+  color: #211914;
 }
 
 .vl-cta__copy .vl-eyebrow__line {
-  background: #30201a;
+  background: #211914;
 }
 
 .vl-cta__copy h2 {
-  font-size: clamp(2.5rem, 5vw, 4.8rem);
-  text-shadow: 2px 2px 0 #f4c18d;
+  max-width: 720px;
+  color: #f8e1bd;
+  font-size: clamp(2.8rem, 5vw, 4.7rem);
+  text-shadow:
+    3px 3px 0 #39231f,
+    5px 5px 0 #17131a;
 }
 
 .vl-cta__copy > p:last-child {
+  max-width: 650px;
   margin: 15px 0 0;
-  color: #3c2a23;
-  font-size: 0.9rem;
-  line-height: 1.7;
+  color: #30211b;
+  font-size: 1rem;
+  line-height: 1.8;
 }
 
 .vl-button--dark {
-  border-color: #11131a;
+  min-width: 190px;
+  border: 2px solid #11131a;
   background: #11131a;
   color: var(--vl-cream);
-  box-shadow: 4px 4px 0 #f4c18d;
+  box-shadow: 4px 4px 0 #e5a15e;
 }
 
 .vl-button--dark:hover {
-  background: #28232a;
+  background: #25232a;
 }
 
 .vl-cta__bottom {
@@ -1050,19 +1218,20 @@
   align-items: center;
   justify-content: space-between;
   gap: 15px;
-  max-width: 1264px;
+  max-width: 1160px;
   margin: 0 auto;
   padding: 18px 0;
   border-top: 1px solid #17131a55;
-  color: #30201a;
-  font-size: 0.58rem;
+  color: #30211b;
+  font-size: 0.64rem;
   font-weight: 900;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
+  line-height: 1.7;
 }
 
-/* =========================================
+/* =========================================================
    ANIMACIONES
-   ========================================= */
+   ========================================================= */
 
 @keyframes vl-status-pulse {
   0%, 100% {
@@ -1076,12 +1245,8 @@
 }
 
 @keyframes vl-gear-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes vl-energy-flash {
@@ -1095,9 +1260,19 @@
   }
 }
 
-/* =========================================
+@keyframes vl-industrial-breathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes vl-card-glow {
+  0%, 100% { opacity: 0.07; }
+  50% { opacity: 0.17; }
+}
+
+/* =========================================================
    TABLET
-   ========================================= */
+   ========================================================= */
 
 @media (max-width: 1000px) {
   .vl-hero {
@@ -1127,26 +1302,45 @@
   }
 
   .vl-feature-grid {
-    gap: 15px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
   }
 
-  .vl-feature {
-    padding: 20px;
+  .vl-feature:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .vl-feature:last-child .vl-feature__description {
+    max-width: 720px;
+  }
+
+  .vl-specs__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .vl-spec:nth-child(2) {
+    border-right: 0;
+  }
+
+  .vl-spec:nth-child(1),
+  .vl-spec:nth-child(2) {
+    border-bottom: 1px solid #514536;
   }
 
   .vl-cta__content {
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: 68px minmax(0, 1fr);
   }
 
   .vl-cta__content > .vl-button {
     grid-column: 2;
     justify-self: start;
+    width: auto;
   }
 }
 
-/* =========================================
+/* =========================================================
    MÓVIL
-   ========================================= */
+   ========================================================= */
 
 @media (max-width: 700px) {
   .vl-hero {
@@ -1209,14 +1403,18 @@
   }
 
   .vl-universe {
-    padding: 70px 20px;
+    padding: 62px 20px 70px;
   }
 
   .vl-section-heading {
     align-items: flex-start;
     flex-direction: column;
-    gap: 22px;
-    margin-bottom: 35px;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .vl-section-heading h2 {
+    font-size: clamp(2.6rem, 11vw, 4rem);
   }
 
   .vl-section-heading__note {
@@ -1224,56 +1422,69 @@
   }
 
   .vl-universe__intro {
-    grid-template-columns: 1fr;
-    gap: 22px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
     padding: 22px;
-    margin-bottom: 35px;
+    margin-bottom: 28px;
+  }
+
+  .vl-universe__intro > p {
+    font-size: 0.98rem;
   }
 
   .vl-feature-grid {
     grid-template-columns: minmax(0, 1fr);
-    gap: 20px;
+    gap: 18px;
   }
 
-  .vl-feature {
-    min-height: 330px;
+  .vl-feature,
+  .vl-feature:last-child {
+    grid-column: auto;
+    padding: 24px;
+  }
+
+  .vl-feature__top {
+    margin-bottom: 22px;
+  }
+
+  .vl-feature h3 {
+    font-size: 2rem;
+  }
+
+  .vl-feature__description {
+    font-size: 1rem;
+    line-height: 1.8;
   }
 
   .vl-specs {
-    padding: 45px 20px;
-  }
-
-  .vl-specs__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 38px 20px 44px;
   }
 
   .vl-spec {
-    padding: 22px 17px;
-    border-bottom: 1px solid #39343a;
+    padding: 20px 15px;
   }
 
-  .vl-spec:nth-child(2) {
-    border-right: 0;
+  .vl-spec__index {
+    margin-bottom: 17px;
   }
 
-  .vl-spec:nth-child(3),
-  .vl-spec:nth-child(4) {
-    border-bottom: 0;
+  .vl-spec h3 {
+    font-size: 1rem;
   }
 
   .vl-cta {
-    padding: 50px 20px 0;
+    padding: 42px 20px 0;
   }
 
   .vl-cta__content {
     grid-template-columns: minmax(0, 1fr);
-    gap: 25px;
-    padding-bottom: 45px;
+    gap: 22px;
+    padding-bottom: 38px;
   }
 
   .vl-cta__symbol {
-    width: 65px;
-    height: 65px;
+    width: 64px;
+    height: 64px;
   }
 
   .vl-cta__symbol svg {
@@ -1284,10 +1495,18 @@
   .vl-cta__content > .vl-button {
     grid-column: auto;
     justify-self: stretch;
+    width: 100%;
+  }
+
+  .vl-cta__copy h2 {
+    font-size: clamp(2.7rem, 11vw, 4rem);
   }
 
   .vl-cta__bottom {
-    font-size: 0.5rem;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.62rem;
   }
 }
 
@@ -1313,13 +1532,32 @@
     padding: 0 12px 15px;
   }
 
-  .vl-spec {
-    padding: 18px 12px;
+  .vl-specs__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .vl-spec,
+  .vl-spec:nth-child(1),
+  .vl-spec:nth-child(2),
+  .vl-spec:nth-child(3) {
+    border-right: 0;
+    border-bottom: 1px solid #514536;
+  }
+
+  .vl-spec:last-child {
+    border-bottom: 0;
+  }
+
+  .vl-feature {
+    padding: 20px;
+  }
+
+  .vl-feature__stamp {
+    font-size: 0.55rem;
   }
 }
 
-/* Respetar la preferencia de movimiento reducido */
-
+/* Respetar la preferencia del sistema por menos movimiento. */
 @media (prefers-reduced-motion: reduce) {
   .vl-home *,
   .vl-home *::before,

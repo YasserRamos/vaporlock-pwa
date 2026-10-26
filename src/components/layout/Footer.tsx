@@ -1,5 +1,7 @@
-﻿import { Link } from "react-router-dom";
-import { ArrowUp, Cog } from "lucide-react";
+﻿
+import { Link } from "react-router-dom";
+import { ArrowUp, Cog, ChevronRight } from "lucide-react";
+import "./css/footer.css";
 
 const footerLinks = [
   { label: "Inicio", to: "/" },
@@ -11,60 +13,103 @@ const footerLinks = [
 ];
 
 export default function Footer() {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <footer className="border-t-4 border-black bg-[var(--vl-panel)] text-[var(--vl-paper)]">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-12 md:grid-cols-2 md:px-10">
-        <div>
-          <Link
-            to="/"
-            className="inline-flex items-center gap-3 text-3xl font-black uppercase tracking-tight"
-          >
-            <Cog size={30} className="text-amber-400" />
-            VAPOR<span className="text-amber-400">LOCK</span>
+    <footer className="vapor-footer">
+      <div className="vapor-footer-topline" aria-hidden="true" />
+
+      <div className="vapor-footer-main">
+        <div className="vapor-footer-brand">
+          <Link to="/" className="vapor-footer-logo">
+            <Cog size={30} strokeWidth={1.7} />
+            <span>
+              VAPOR<span className="vapor-footer-logo-accent">LOCK</span>
+            </span>
           </Link>
 
-          <p className="mt-4 max-w-md text-sm leading-6 text-[var(--vl-muted)]">
-            Una aventura de acción y plataformas en 2D ambientada en
-            Metronia, una ciudad steampunk futurista del año 2943.
+          <div className="vapor-footer-location">
+            <span className="vapor-footer-status" />
+            METRONIA <span>//</span> 2943
+          </div>
+
+          <p className="vapor-footer-description">
+            Una aventura de acción y plataformas en 2D ambientada en Metronia,
+            una ciudad steampunk futurista del año 2943.
           </p>
 
-          <p className="mt-5 font-mono text-xs uppercase tracking-widest text-amber-400">
-            Universidad Tecnológica de Cancún · Integradora III
-          </p>
+          <div className="vapor-footer-academic">
+            <span>PROYECTO ACADÉMICO</span>
+            <p>Universidad Tecnológica de Cancún</p>
+            <p>Integradora III</p>
+          </div>
         </div>
 
-        <div>
-          <h2 className="mb-4 text-sm font-black uppercase tracking-widest">
-            Explorar Vaporlock
-          </h2>
+        <div className="vapor-footer-navigation">
+          <p className="vapor-footer-section-label">
+            <ChevronRight size={15} />
+            ÍNDICE DE ARCHIVOS
+          </p>
 
-          <nav aria-label="Enlaces del pie de página" className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {footerLinks.map((link) => (
+          <h2>Explorar Vaporlock</h2>
+
+          <nav aria-label="Enlaces del pie de página">
+            {footerLinks.map((link, index) => (
               <Link
                 key={link.to}
                 to={link.to}
-                className="text-sm text-[var(--vl-muted)] transition-colors hover:text-amber-400"
+                className="vapor-footer-link"
               >
-                {link.label}
+                <span className="vapor-footer-link-number">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span>{link.label}</span>
+                <ChevronRight
+                  size={15}
+                  className="vapor-footer-link-arrow"
+                />
               </Link>
             ))}
           </nav>
         </div>
+
+        <div className="vapor-footer-decoration" aria-hidden="true">
+          <div className="vapor-footer-gear">
+            <Cog size={72} strokeWidth={0.8} />
+          </div>
+          <span className="vapor-footer-decoration-line" />
+          <span className="vapor-footer-decoration-caption">
+            METRONIA INDUSTRIAL ARCHIVE
+          </span>
+          <div className="vapor-footer-pixels">
+            {Array.from({ length: 9 }, (_, index) => (
+              <span key={index} />
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div className="border-t border-black/40">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-5 text-xs text-[var(--vl-muted)] sm:flex-row sm:items-center sm:justify-between md:px-10">
-          <p>Vaporlock · Proyecto académico</p>
+      <div className="vapor-footer-bottom">
+        <p>
+          <span className="vapor-footer-status" />
+          VAPORLOCK <span className="vapor-footer-separator">/</span>{" "}
+          PROYECTO ACADÉMICO
+        </p>
 
-          <button
-            type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="inline-flex items-center gap-2 self-start font-bold uppercase transition-colors hover:text-amber-400 sm:self-auto"
-          >
-            Volver arriba
-            <ArrowUp size={14} />
-          </button>
-        </div>
+        <span className="vapor-footer-copyright">
+          METRONIA · 2943
+        </span>
+
+        <button
+          type="button"
+          onClick={scrollToTop}
+          className="vapor-footer-top-button"
+        >
+          VOLVER ARRIBA
+          <ArrowUp size={15} />
+        </button>
       </div>
     </footer>
   );
