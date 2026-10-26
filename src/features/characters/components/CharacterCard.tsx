@@ -1,12 +1,14 @@
-﻿import { ArrowUpRight, Heart, Shield, Swords } from "lucide-react";
+﻿
+import { ArrowUpRight, Heart, Shield, Swords } from "lucide-react";
+import { motion } from "motion/react";
 import type { Character } from "../types/character.types";
 
 const roleColors: Record<string, string> = {
-  Protagonista: "bg-[#e38a42] text-[#11131a]",
-  NPC: "bg-[#5ca8a0] text-[#11131a]",
-  Enemigo: "bg-[#343b51] text-[#f4e8cf]",
-  "Sub-jefe": "bg-[#bd7637] text-[#11131a]",
-  "Jefe final": "bg-[#bd4034] text-white",
+  Protagonista: "character-card__role--hero",
+  NPC: "character-card__role--npc",
+  Enemigo: "character-card__role--enemy",
+  "Sub-jefe": "character-card__role--subboss",
+  "Jefe final": "character-card__role--boss",
 };
 
 type Props = {
@@ -15,54 +17,109 @@ type Props = {
 };
 
 export default function CharacterCard({ character, onSelect }: Props) {
+  const initials = character.name
+    .split(/[\s-]+/)
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 3);
+
   return (
-    <article className="group flex h-full flex-col border-[3px] border-black bg-[#1c202a] shadow-[5px_5px_0_#08090d] transition-transform duration-200 hover:-translate-y-1">
-      <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b-[3px] border-black bg-[#252b37]">
-        <div className="pixel-texture absolute inset-0 opacity-60" />
-        <span className="relative comic-heading text-center text-4xl text-[#f4e8cf] sm:text-5xl">
-          {character.name
-            .split(/[\s-]+/)
-            .map((part) => part[0])
-            .join("")
-            .slice(0, 3)}
+    <motion.article
+      layout
+      initial={{ opacity: 0, y: 22, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      whileHover={{ y: -7, rotateX: 1.5 }}
+      transition={{
+        layout: { duration: 0.25 },
+        opacity: { duration: 0.3 },
+        y: { type: "spring", stiffness: 300, damping: 22 },
+        scale: { duration: 0.25 },
+      }}
+      className="character-card group flex h-full flex-col"
+    >
+      {/* Ilustración del personaje */}
+      <div className="character-card__art pixel-texture">
+        <div className="character-card__art-grid" aria-hidden="true" />
+        <div className="character-card__art-glow" aria-hidden="true" />
+
+        <span className="character-card__corner character-card__corner--tl" />
+        <span className="character-card__corner character-card__corner--tr" />
+        <span className="character-card__corner character-card__corner--bl" />
+        <span className="character-card__corner character-card__corner--br" />
+
+        <span className="character-card__role">
+          <span className={`character-card__role-badge ${roleColors[character.role] ?? ""}`}>
+            {character.role}
+          </span>
         </span>
-        <span className={`absolute left-3 top-3 border-2 border-black px-2 py-1 text-[9px] font-black uppercase tracking-wider ${roleColors[character.role]}`}>
-          {character.role}
-        </span>
-        <span className="absolute bottom-3 right-3 bg-black/80 px-2 py-1 text-[10px] font-bold text-[#f4e8cf]">
-          {character.id}
+
+        <motion.div
+          className="character-card__portrait"
+          whileHover={{ scale: 1.08, y: -3 }}
+          transition={{ type: "spring", stiffness: 260, damping: 15 }}
+        >
+          <span className="character-card__initials" aria-hidden="true">
+            {initials}
+          </span>
+          <Swords
+            className="character-card__portrait-icon"
+            size={24}
+            aria-hidden="true"
+          />
+        </motion.div>
+
+        <span className="character-card__art-caption">
+          <span className="character-card__signal" />
+          REGISTRO DE PERSONAJE
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col p-4 sm:p-5">
-        <h3 className="text-xl font-black uppercase leading-tight text-[#f4e8cf]">
-          {character.name}
-        </h3>
+      {/* Información */}
+      <div className="character-card__body">
+        <div className="character-card__title-row">
+          <div className="min-w-0">
+            <p className="character-card__eyebrow">ARCHIVO DE METRONIA</p>
+            <h3 className="character-card__name">{character.name}</h3>
+          </div>
 
-        <div className="mt-4 flex flex-wrap gap-2 text-xs font-bold text-[#d2c8b7]">
-          <span className="inline-flex items-center gap-1 border border-white/15 px-2 py-1">
-            <Heart size={13} className="text-[#bd4034]" />
-            HP: {character.hp ?? "Sin definir"}
-          </span>
-          <span className="inline-flex items-center gap-1 border border-white/15 px-2 py-1">
-            <Shield size={13} className="text-[#5ca8a0]" />
-            {character.aggressiveness}
+          <span className="character-card__index" aria-hidden="true">
+            <Shield size={20} />
           </span>
         </div>
 
-        <p className="mt-4 text-xs leading-5 text-[#b8b1a3]">
-          <span className="font-black uppercase text-[#e38a42]">Aparición: </span>
-          {character.appearance.join(" / ")}
-        </p>
+        <div className="character-card__stats">
+          <div className="character-card__stat">
+            <Heart size={15} className="character-card__hp-icon" />
+            <span className="character-card__stat-label">SALUD</span>
+            <strong>{character.hp ?? "—"}</strong>
+          </div>
+
+          <div className="character-card__stat">
+            <Shield size={15} className="character-card__defense-icon" />
+            <span className="character-card__stat-label">ACTITUD</span>
+            <strong className="character-card__aggression">
+              {character.aggressiveness}
+            </strong>
+          </div>
+        </div>
+
+        <div className="character-card__appearance">
+          <span className="character-card__appearance-label">
+            APARICIÓN
+          </span>
+          <p>{character.appearance.join(" / ")}</p>
+        </div>
 
         <button
           type="button"
           onClick={() => onSelect(character)}
-          className="comic-button mt-5 w-full bg-[#f4e8cf] text-sm text-[#11131a]"
+          className="character-card__button"
+          aria-label={`Ver ficha de ${character.name}`}
         >
-          Ver ficha <ArrowUpRight size={17} />
+          <span>CONSULTAR FICHA</span>
+          <ArrowUpRight size={18} />
         </button>
       </div>
-    </article>
+    </motion.article>
   );
 }

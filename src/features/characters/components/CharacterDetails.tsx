@@ -1,6 +1,16 @@
-﻿import { useEffect } from "react";
+﻿
+import { useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Heart, X } from "lucide-react";
+import {
+  Heart,
+  X,
+  Shield,
+  Zap,
+  Crosshair,
+  Activity,
+  Cog,
+  ArrowUpRight,
+} from "lucide-react";
 import type { Character } from "../types/character.types";
 
 type Props = {
@@ -16,15 +26,21 @@ export default function CharacterDetails({ character, onClose }: Props) {
       if (event.key === "Escape") onClose();
     };
 
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKey);
+    };
   }, [character, onClose]);
 
   return (
     <AnimatePresence>
       {character && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-end justify-center bg-black/80 p-0 backdrop-blur-sm sm:items-center sm:p-5"
+          className="character-modal"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -36,89 +52,209 @@ export default function CharacterDetails({ character, onClose }: Props) {
             role="dialog"
             aria-modal="true"
             aria-labelledby="character-detail-title"
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 20, opacity: 0 }}
-            className="max-h-[90dvh] w-full max-w-2xl overflow-y-auto border-t-[6px] border-[#bd4034] bg-[#1c202a] p-5 shadow-[0_0_0_4px_#08090d] sm:border-[4px] sm:border-t-[6px] sm:border-black sm:p-8"
+            className="character-modal__panel"
+            initial={{ opacity: 0, y: 40, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 24, scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 260, damping: 25 }}
           >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#e38a42]">
-                  Archivo de personaje
-                </p>
-                <h2 id="character-detail-title" className="comic-heading mt-2 text-3xl sm:text-4xl">
+            {/* CABECERA */}
+            <header className="character-modal__header">
+              <div className="character-modal__heading">
+                <div className="character-modal__eyebrow">
+                  <span className="character-modal__signal" />
+                  ARCHIVO DE METRONIA
+                </div>
+
+                <h2 id="character-detail-title">
                   {character.name}
                 </h2>
-                <p className="mt-2 text-xs text-[#b8b1a3]">{character.id}</p>
+
+                <p>
+                  REGISTRO DE PERSONAJE
+                  <span> / </span>
+                  {character.role.toUpperCase()}
+                </p>
               </div>
+
               <button
                 type="button"
                 onClick={onClose}
                 aria-label="Cerrar ficha"
-                className="flex size-11 shrink-0 items-center justify-center border-2 border-[#f4e8cf] hover:bg-white/10"
+                className="character-modal__close"
               >
-                <X size={22} />
+                <X size={23} />
               </button>
-            </div>
+            </header>
 
-            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <div className="border-2 border-black bg-[#252b37] p-4">
-                <p className="text-xs uppercase tracking-wider text-[#b8b1a3]">Rol</p>
-                <p className="mt-1 font-black">{character.role}</p>
-              </div>
-              <div className="border-2 border-black bg-[#252b37] p-4">
-                <p className="text-xs uppercase tracking-wider text-[#b8b1a3]">Agresividad</p>
-                <p className="mt-1 font-black">{character.aggressiveness}</p>
-              </div>
-              <div className="border-2 border-black bg-[#252b37] p-4">
-                <p className="text-xs uppercase tracking-wider text-[#b8b1a3]">Salud</p>
-                <p className="mt-1 flex items-center gap-2 font-black">
-                  <Heart size={16} className="text-[#bd4034]" />
-                  {character.hp ?? "Sin definir"}
-                </p>
-              </div>
-              <div className="border-2 border-black bg-[#252b37] p-4">
-                <p className="text-xs uppercase tracking-wider text-[#b8b1a3]">Aparición</p>
-                <p className="mt-1 font-black">{character.appearance.join(", ")}</p>
-              </div>
-            </div>
+            {/* PANEL DE INFORMACIÓN */}
+            <div className="character-modal__content">
+              <motion.div
+                className="character-modal__identity"
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.12 }}
+              >
+                <div className="character-modal__emblem">
+                  <div className="character-modal__emblem-grid" />
+                  <Cog
+                    className="character-modal__gear"
+                    size={106}
+                    strokeWidth={1}
+                  />
+                  <Shield
+                    className="character-modal__shield"
+                    size={62}
+                    strokeWidth={1.5}
+                  />
+                  <Zap
+                    className="character-modal__zap"
+                    size={24}
+                    fill="currentColor"
+                  />
+                </div>
 
-            <div className="mt-6">
-              <h3 className="border-b-2 border-[#bd4034] pb-2 text-sm font-black uppercase tracking-wider">
-                Acciones
-              </h3>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {character.actions.map((action) => (
-                  <span key={action} className="border-2 border-black bg-[#343b51] px-3 py-2 text-xs font-bold">
-                    {action}
+                <div className="character-modal__identity-copy">
+                  <span className="character-modal__section-label">
+                    PERFIL
                   </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <h3 className="border-b-2 border-[#e38a42] pb-2 text-sm font-black uppercase tracking-wider">
-                Habilidades
-              </h3>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {character.abilities.map((ability) => (
-                  <span key={ability} className="border-2 border-black bg-[#302a2b] px-3 py-2 text-xs font-bold text-[#f4e8cf]">
-                    {ability}
+                  <h3>{character.name}</h3>
+                  <span className="character-modal__role">
+                    {character.role}
                   </span>
-                ))}
+
+                  <p>
+                    {character.description ||
+                      "La información adicional de este personaje se incorporará cuando esté definida."}
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* ATRIBUTOS */}
+              <div className="character-modal__section">
+                <div className="character-modal__section-title">
+                  <Activity size={17} />
+                  <h3>ATRIBUTOS</h3>
+                  <span />
+                </div>
+
+                <div className="character-modal__stats">
+                  <motion.div
+                    className="character-modal__stat character-modal__stat--health"
+                    whileHover={{ y: -3 }}
+                  >
+                    <Heart size={21} />
+                    <span>SALUD</span>
+                    <strong>{character.hp ?? "Sin definir"}</strong>
+                  </motion.div>
+
+                  <motion.div
+                    className="character-modal__stat character-modal__stat--defense"
+                    whileHover={{ y: -3 }}
+                  >
+                    <Shield size={21} />
+                    <span>ACTITUD</span>
+                    <strong>{character.aggressiveness}</strong>
+                  </motion.div>
+
+                  <motion.div
+                    className="character-modal__stat character-modal__stat--role"
+                    whileHover={{ y: -3 }}
+                  >
+                    <Crosshair size={21} />
+                    <span>ROL</span>
+                    <strong>{character.role}</strong>
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* APARICIONES */}
+              <div className="character-modal__section">
+                <div className="character-modal__section-title">
+                  <ArrowUpRight size={17} />
+                  <h3>APARICIONES</h3>
+                  <span />
+                </div>
+
+                <div className="character-modal__tags">
+                  {character.appearance.map((appearance) => (
+                    <motion.span
+                      key={appearance}
+                      className="character-modal__tag"
+                      whileHover={{ y: -2 }}
+                    >
+                      {appearance}
+                    </motion.span>
+                  ))}
+                </div>
+              </div>
+
+              {/* ACCIONES */}
+              <div className="character-modal__section">
+                <div className="character-modal__section-title">
+                  <Crosshair size={17} />
+                  <h3>ACCIONES</h3>
+                  <span />
+                </div>
+
+                <div className="character-modal__tags">
+                  {character.actions.length > 0 ? (
+                    character.actions.map((action) => (
+                      <motion.span
+                        key={action}
+                        className="character-modal__tag character-modal__tag--action"
+                        whileHover={{ y: -2 }}
+                      >
+                        {action}
+                      </motion.span>
+                    ))
+                  ) : (
+                    <p className="character-modal__empty">
+                      Acciones pendientes de definir.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* HABILIDADES */}
+              <div className="character-modal__section">
+                <div className="character-modal__section-title">
+                  <Zap size={17} />
+                  <h3>HABILIDADES</h3>
+                  <span />
+                </div>
+
+                <div className="character-modal__tags">
+                  {character.abilities.length > 0 ? (
+                    character.abilities.map((ability) => (
+                      <motion.span
+                        key={ability}
+                        className="character-modal__tag character-modal__tag--ability"
+                        whileHover={{ y: -2 }}
+                      >
+                        <Zap size={13} />
+                        {ability}
+                      </motion.span>
+                    ))
+                  ) : (
+                    <p className="character-modal__empty">
+                      Habilidades pendientes de definir.
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
-            {character.description && (
-              <div className="mt-6">
-                <h3 className="text-sm font-black uppercase tracking-wider">Descripción</h3>
-                <p className="mt-2 text-sm leading-6 text-[#b8b1a3]">{character.description}</p>
-              </div>
-            )}
-
-            <p className="mt-6 border-t border-white/10 pt-4 text-xs text-[#b8b1a3]">
-              Los campos no definidos se completarán cuando exista información oficial del proyecto.
-            </p>
+            {/* PIE */}
+            <footer className="character-modal__footer">
+              <span>
+                <span className="character-modal__signal" />
+                SISTEMA DE ARCHIVOS ACTIVO
+              </span>
+              <button type="button" onClick={onClose}>
+                CERRAR ARCHIVO <X size={15} />
+              </button>
+            </footer>
           </motion.section>
         </motion.div>
       )}

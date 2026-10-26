@@ -1,24 +1,119 @@
-# Logs
-logs
-*.log
+
+# ==========================================
+# VAPORLOCK PWA — GITIGNORE
+# React + TypeScript + Vite + Tailwind CSS
+# ==========================================
+
+# Dependencies
+node_modules/
+
+# Package manager debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# General logs
+logs/
+*.log
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+out/
+coverage/
+
+# Local environment variables and secrets
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Local-only configuration
 *.local
+
+# Vite
+.vite/
+vite.config.*.timestamp-*
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+playwright-report/
+test-results/
+.nyc_output/
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+!.vscode/settings.json
+!.vscode/launch.json
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.code-workspace
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files and backups
+*.tmp
+*.temp
+*.bak
+*.orig
+*.backup
+*.backup-*
+*.swp
+*.swo
+*~
+
+# ==========================================
+# Tauri / Rust
+# Keep these rules if the project uses Tauri
+# ==========================================
+
+# Rust build artifacts
+src-tauri/target/
+target/
+
+# Tauri generated build output
+src-tauri/gen/schemas/
+
+# Local Rust environment
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ==========================================
+# IDE / tool caches
+# ==========================================
+
+.eslintcache
+.stylelintcache
+.cache/
+.parcel-cache/
+
+# ==========================================
+# Do NOT ignore:
+# ==========================================
+# src/
+# public/
+# public/fonts/
+# package.json
+# pnpm-lock.yaml
+# index.html
+# vite.config.ts
+# tsconfig*.json
+# postcss.config.*
+# eslint.config.*
+# src-tauri/Cargo.toml
+# src-tauri/Cargo.lock

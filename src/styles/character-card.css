@@ -1,0 +1,484 @@
+
+/*** Tarjetas de personajes ***/
+/*** CHARACTER CARDS — STEAMPUNK COMIC INTERFACE ***/
+
+.character-card {
+  --card-accent: #c59a59;
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  overflow: hidden;
+  border: 2px solid #08090c;
+  outline: 1px solid #393a3c;
+  background: #1c202a;
+  box-shadow: 5px 5px 0 #08090d;
+  transform-origin: center bottom;
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background-color 220ms ease;
+}
+
+.character-card::before {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: -100%;
+  width: 55%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--card-accent),
+    transparent
+  );
+  content: "";
+  pointer-events: none;
+  transition: left 450ms ease;
+}
+
+.character-card:hover {
+  border-color: var(--card-accent);
+  background-color: #242936;
+  box-shadow:
+    8px 10px 0 #08090d,
+    0 0 20px color-mix(in srgb, var(--card-accent) 18%, transparent);
+}
+
+.character-card:hover::before {
+  left: 150%;
+}
+
+.character-card__art {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 210px;
+  aspect-ratio: 4 / 3;
+  place-items: center;
+  overflow: hidden;
+  border-bottom: 3px solid #08090c;
+  background:
+    radial-gradient(ellipse at 50% 44%, #354151 0%, transparent 55%),
+    linear-gradient(145deg, #29303d, #171b24);
+}
+
+.character-card__art-grid {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  opacity: 0.22;
+  background-image:
+    linear-gradient(rgb(197 154 89 / 17%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(197 154 89 / 17%) 1px, transparent 1px);
+  background-size: 16px 16px;
+  mask-image: radial-gradient(ellipse at center, black, transparent 85%);
+  transition:
+    opacity 250ms ease,
+    background-size 350ms ease;
+}
+
+.character-card:hover .character-card__art-grid {
+  opacity: 0.5;
+  background-size: 12px 12px;
+}
+
+.character-card__art-glow {
+  position: absolute;
+  z-index: -1;
+  width: 48%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--card-accent);
+  opacity: 0.06;
+  filter: blur(32px);
+  transition:
+    opacity 250ms ease,
+    transform 350ms ease;
+}
+
+.character-card:hover .character-card__art-glow {
+  transform: scale(1.6);
+  opacity: 0.22;
+}
+
+.character-card__corner {
+  position: absolute;
+  z-index: 2;
+  width: 17px;
+  height: 17px;
+  border-color: var(--card-accent);
+  border-style: solid;
+  opacity: 0.7;
+  transition:
+    width 220ms ease,
+    height 220ms ease,
+    opacity 220ms ease;
+}
+
+.character-card__corner--tl {
+  top: 10px;
+  left: 10px;
+  border-width: 2px 0 0 2px;
+}
+
+.character-card__corner--tr {
+  top: 10px;
+  right: 10px;
+  border-width: 2px 2px 0 0;
+}
+
+.character-card__corner--bl {
+  bottom: 10px;
+  left: 10px;
+  border-width: 0 0 2px 2px;
+}
+
+.character-card__corner--br {
+  right: 10px;
+  bottom: 10px;
+  border-width: 0 2px 2px 0;
+}
+
+.character-card:hover .character-card__corner {
+  width: 25px;
+  height: 25px;
+  opacity: 1;
+}
+
+.character-card__role {
+  position: absolute;
+  z-index: 4;
+  top: 15px;
+  left: 15px;
+}
+
+.character-card__role-badge {
+  display: inline-block;
+  border: 2px solid #08090c;
+  padding: 6px 9px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 #08090c;
+}
+
+.character-card__role--hero {
+  background: #e38a42;
+  color: #11131a;
+}
+
+.character-card__role--npc {
+  background: #5ca8a0;
+  color: #11131a;
+}
+
+.character-card__role--enemy {
+  background: #343b51;
+  color: #f4e8cf;
+}
+
+.character-card__role--subboss {
+  background: #bd7637;
+  color: #11131a;
+}
+
+.character-card__role--boss {
+  background: #bd4034;
+  color: white;
+}
+
+.character-card__portrait {
+  position: relative;
+  display: grid;
+  width: 112px;
+  height: 112px;
+  place-items: center;
+  border: 3px solid #090b10;
+  outline: 1px solid var(--card-accent);
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 8%), transparent 55%),
+    #292f3b;
+  color: #f4e8cf;
+  box-shadow:
+    6px 6px 0 #090b10,
+    inset 0 0 0 5px rgb(255 255 255 / 3%);
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.character-card:hover .character-card__portrait {
+  border-color: var(--card-accent);
+  box-shadow:
+    6px 6px 0 #090b10,
+    0 0 22px color-mix(in srgb, var(--card-accent) 24%, transparent);
+}
+
+.character-card__initials {
+  font-family: "VaporlockDisplay", Impact, sans-serif;
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-shadow: 3px 3px 0 #090b10;
+}
+
+.character-card__portrait-icon {
+  position: absolute;
+  right: -12px;
+  bottom: -12px;
+  display: grid;
+  box-sizing: content-box;
+  border: 2px solid #090b10;
+  background: var(--card-accent);
+  padding: 5px;
+  color: #11131a;
+  box-shadow: 2px 2px 0 #090b10;
+}
+
+.character-card__art-caption {
+  position: absolute;
+  right: 14px;
+  bottom: 13px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #c7c2b8;
+  font-size: 9px;
+  letter-spacing: 0.09em;
+}
+
+.character-card__signal {
+  width: 6px;
+  height: 6px;
+  background: var(--card-accent);
+  box-shadow: 0 0 9px var(--card-accent);
+  animation: character-signal 1.7s steps(2, end) infinite;
+}
+
+.character-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 17px;
+}
+
+.character-card__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgb(244 232 207 / 13%);
+}
+
+.character-card__eyebrow {
+  margin: 0 0 6px;
+  color: var(--card-accent);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.character-card__name {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #f4e8cf;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.05;
+  text-transform: uppercase;
+  transition:
+    color 200ms ease,
+    text-shadow 200ms ease;
+}
+
+.character-card:hover .character-card__name {
+  color: var(--card-accent);
+  text-shadow: 0 0 15px color-mix(in srgb, var(--card-accent) 22%, transparent);
+}
+
+.character-card__index {
+  display: grid;
+  width: 35px;
+  height: 35px;
+  flex: 0 0 35px;
+  place-items: center;
+  border: 1px solid #41434a;
+  color: var(--card-accent);
+  transition:
+    transform 300ms ease,
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+.character-card:hover .character-card__index {
+  transform: rotate(-12deg);
+  border-color: var(--card-accent);
+  background: rgb(255 255 255 / 4%);
+}
+
+.character-card__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.character-card__stat {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  align-items: center;
+  gap: 5px 7px;
+  border: 1px solid rgb(244 232 207 / 12%);
+  background: rgb(0 0 0 / 12%);
+  padding: 9px;
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+.character-card:hover .character-card__stat {
+  border-color: rgb(197 154 89 / 30%);
+  background: rgb(0 0 0 / 20%);
+}
+
+.character-card__hp-icon {
+  color: #e85549;
+}
+
+.character-card__defense-icon {
+  color: #5ca8a0;
+}
+
+.character-card__stat-label {
+  overflow: hidden;
+  color: #9e9a92;
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-overflow: ellipsis;
+}
+
+.character-card__stat strong {
+  grid-column: 2;
+  color: #f4e8cf;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.character-card__aggression {
+  text-transform: uppercase;
+}
+
+.character-card__appearance {
+  flex: 1;
+  margin-top: 15px;
+  padding: 12px 0;
+}
+
+.character-card__appearance-label {
+  color: var(--card-accent);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.character-card__appearance p {
+  margin: 6px 0 0;
+  color: #b8b1a3;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.character-card__button {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 45px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  overflow: hidden;
+  border: 2px solid #08090c;
+  background: #f4e8cf;
+  padding: 11px 13px;
+  color: #11131a;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  box-shadow: 4px 4px 0 #08090c;
+  cursor: pointer;
+  transition:
+    transform 180ms steps(3, end),
+    background-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.character-card__button::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  transform: translateX(-105%);
+  background: var(--card-accent);
+  content: "";
+  transition: transform 220ms ease;
+}
+
+.character-card__button:hover::before,
+.character-card__button:focus-visible::before {
+  transform: translateX(0);
+}
+
+.character-card__button:hover,
+.character-card__button:focus-visible {
+  transform: translate(-2px, -2px);
+  color: #11131a;
+  box-shadow: 6px 6px 0 #08090c;
+}
+
+.character-card__button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #08090c;
+}
+
+.character-card__button svg {
+  transition: transform 180ms ease;
+}
+
+.character-card__button:hover svg {
+  transform: translate(2px, -2px);
+}
+
+@keyframes character-signal {
+  0%, 45% {
+    opacity: 1;
+  }
+  46%, 100% {
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 480px) {
+  .character-card__art {
+    min-height: 185px;
+  }
+  .character-card__body {
+    padding: 14px;
+  }
+  .character-card__name {
+    font-size: 21px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .character-card,
+  .character-card *,
+  .character-card::before,
+  .character-card *::before,
+  .character-card *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,1331 @@
+
+/* =========================================
+   VAPORLOCK - HOME
+   Estética steampunk, industrial y editorial
+   ========================================= */
+
+.vl-home {
+  --vl-bg: #11131a;
+  --vl-panel: #191b24;
+  --vl-panel-light: #22232c;
+  --vl-cream: #f4e8cf;
+  --vl-muted: #b8b1a3;
+  --vl-copper: #e38a42;
+  --vl-red: #bd4034;
+  --vl-teal: #24d7d1;
+  --vl-border: #39343a;
+  overflow: hidden;
+  background: var(--vl-bg);
+  color: var(--vl-cream);
+}
+
+.vl-home *,
+.vl-home *::before,
+.vl-home *::after {
+  box-sizing: border-box;
+}
+
+.vl-home a {
+  text-decoration: none;
+}
+
+.vl-home p,
+.vl-home h1,
+.vl-home h2,
+.vl-home h3 {
+  margin-top: 0;
+}
+
+.vl-home .vl-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  color: var(--vl-copper);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  line-height: 1.6;
+}
+
+.vl-home .vl-eyebrow__line {
+  display: inline-block;
+  width: 34px;
+  height: 3px;
+  flex-shrink: 0;
+  background: var(--vl-copper);
+}
+
+/* =========================================
+   HERO
+   ========================================= */
+
+.vl-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: min(790px, calc(100svh - 72px));
+  padding: 72px clamp(20px, 6vw, 88px) 0;
+  background:
+    radial-gradient(ellipse at 76% 42%, #273a3d 0%, transparent 35%),
+    linear-gradient(120deg, #11131a 15%, #171923 65%, #20232b 100%);
+  border-bottom: 4px solid #050608;
+}
+
+.vl-hero__blueprint,
+.vl-hero__scanlines {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+
+.vl-hero__blueprint {
+  opacity: 0.16;
+  background-image:
+    linear-gradient(#70838a 1px, transparent 1px),
+    linear-gradient(90deg, #70838a 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(90deg, transparent, black 60%, black);
+}
+
+.vl-hero__scanlines {
+  opacity: 0.13;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    #000 4px,
+    transparent 5px
+  );
+}
+
+.vl-hero__content {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  align-items: center;
+  gap: clamp(40px, 7vw, 100px);
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  flex: 1;
+  padding-bottom: 60px;
+}
+
+.vl-hero__copy {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+}
+
+.vl-status {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: fit-content;
+  margin-bottom: 32px;
+  padding: 9px 12px;
+  border: 1px solid #55505a;
+  background: #11131a;
+  color: var(--vl-muted);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.vl-status__light {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--vl-teal);
+  box-shadow: 0 0 10px #24d7d188;
+  animation: vl-status-pulse 2s ease-in-out infinite;
+}
+
+.vl-status__separator {
+  color: var(--vl-copper);
+}
+
+.vl-hero .vl-eyebrow {
+  margin-bottom: 12px;
+}
+
+.vl-hero-title {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 22px;
+  color: #f0d9a8;
+  font-family: "Staatliches", Impact, sans-serif;
+  font-size: clamp(4rem, 9vw, 9rem);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: 0.015em;
+  overflow-wrap: normal;
+  text-shadow:
+    2px 2px 0 #090a0c,
+    4px 4px 0 #8f4c32,
+    6px 6px 0 #090a0c;
+}
+
+.vl-hero-title span {
+  display: block;
+}
+
+.vl-hero-title__lock {
+  color: var(--vl-teal);
+}
+
+.vl-title-caption {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  color: var(--vl-copper);
+  font-size: clamp(0.58rem, 1vw, 0.78rem);
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  line-height: 1.8;
+}
+
+.vl-title-caption__symbol {
+  color: var(--vl-teal);
+}
+
+.vl-hero__description {
+  max-width: 570px;
+  margin-bottom: 30px;
+  color: var(--vl-muted);
+  font-size: 0.98rem;
+  line-height: 1.9;
+}
+
+.vl-hero__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.vl-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 50px;
+  padding: 14px 20px;
+  border: 2px solid transparent;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease;
+}
+
+.vl-button:hover {
+  transform: translateY(-3px);
+}
+
+.vl-button--primary {
+  border-color: var(--vl-copper);
+  background: var(--vl-copper);
+  color: #17131a;
+  box-shadow: 4px 4px 0 #090a0c;
+}
+
+.vl-button--primary:hover {
+  background: #f2a65e;
+}
+
+.vl-button--outline {
+  border-color: #77717a;
+  background: #11131a99;
+  color: var(--vl-cream);
+}
+
+.vl-button--outline:hover {
+  border-color: var(--vl-teal);
+  color: var(--vl-teal);
+}
+
+.vl-hero__metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  color: #898894;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.vl-hero__metadata > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vl-pixel-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  background: var(--vl-teal);
+  box-shadow: 2px 2px 0 #090a0c;
+}
+
+/* =========================================
+   EXPEDIENTE DEL PROTAGONISTA
+   ========================================= */
+
+.vl-character {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  justify-self: center;
+  padding: 14px;
+}
+
+.vl-character__backplate {
+  position: absolute;
+  inset: 0;
+  transform: rotate(4deg);
+  border: 2px solid #55505a;
+  background: #292731;
+}
+
+.vl-character__frame {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border: 2px solid #8b6b50;
+  background: #171820;
+  box-shadow: 8px 8px 0 #08090c;
+}
+
+.vl-character__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 15px;
+  border-bottom: 2px solid #8b6b50;
+  background: #26232a;
+  color: var(--vl-cream);
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.vl-character__record {
+  color: var(--vl-copper);
+  white-space: nowrap;
+}
+
+.vl-character__scene {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 290px;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, #273e43 0%, #354b4a 45%, #171c24 100%);
+}
+
+.vl-character__scene::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0,
+    transparent 4px,
+    #05060928 5px
+  );
+  content: "";
+}
+
+.vl-character__sun {
+  position: absolute;
+  top: 13%;
+  left: 50%;
+  width: 125px;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border: 2px solid #e9b16c99;
+  border-radius: 50%;
+  background: radial-gradient(circle, #e8a968 0%, #b85b43 56%, #6b3840 100%);
+  box-shadow: 0 0 45px #e38a4244;
+}
+
+.vl-character__city {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 44%;
+  background: repeating-linear-gradient(
+    90deg,
+    #131820 0 18px,
+    #35333a 19px 23px,
+    #171a22 24px 43px
+  );
+  clip-path: polygon(
+    0 40%, 9% 40%, 9% 18%, 18% 18%, 18% 55%,
+    28% 55%, 28% 10%, 37% 10%, 37% 36%, 47% 36%,
+    47% 0, 56% 0, 56% 45%, 67% 45%, 67% 20%,
+    78% 20%, 78% 52%, 88% 52%, 88% 27%, 100% 27%,
+    100% 100%, 0 100%
+  );
+}
+
+.vl-character__city--far {
+  bottom: 28%;
+  height: 25%;
+  opacity: 0.45;
+  transform: scaleX(1.1);
+}
+
+.vl-character__city--near {
+  height: 39%;
+}
+
+.vl-character__gear {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  color: #d4a36c;
+  opacity: 0.5;
+}
+
+.vl-character__gear--one {
+  top: 8%;
+  right: 8%;
+  animation: vl-gear-spin 24s linear infinite;
+}
+
+.vl-character__gear--two {
+  bottom: 27%;
+  left: 8%;
+  animation: vl-gear-spin 18s linear infinite reverse;
+}
+
+.vl-character__energy {
+  position: absolute;
+  z-index: 1;
+  bottom: 13%;
+  left: 50%;
+  width: 150px;
+  height: 95px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #24d7d1;
+  opacity: 0.15;
+  filter: blur(24px);
+}
+
+.vl-character__portrait {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 145px;
+  height: 170px;
+  margin-top: 30px;
+  color: #e7c99b;
+  filter: drop-shadow(5px 5px 0 #11131a);
+}
+
+.vl-character__portrait > svg:first-child {
+  width: 100%;
+  height: 100%;
+}
+
+.vl-character__bolt {
+  position: absolute;
+  top: 38%;
+  left: 36%;
+  color: var(--vl-teal);
+  filter: drop-shadow(0 0 10px #24d7d1aa);
+  animation: vl-energy-flash 3s ease-in-out infinite;
+}
+
+.vl-character__crosshair {
+  position: absolute;
+  z-index: 2;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #24d7d188;
+}
+
+.vl-character__crosshair::before,
+.vl-character__crosshair::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--vl-teal);
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.vl-character__crosshair::before {
+  width: 32px;
+  height: 1px;
+}
+
+.vl-character__crosshair::after {
+  width: 1px;
+  height: 32px;
+}
+
+.vl-character__crosshair--left {
+  top: 17%;
+  left: 7%;
+}
+
+.vl-character__crosshair--right {
+  right: 7%;
+  bottom: 26%;
+}
+
+.vl-character__scene-label {
+  position: absolute;
+  z-index: 3;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border: 1px solid #24d7d166;
+  background: #11131ad9;
+  color: var(--vl-teal);
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.vl-character__identity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 20px 16px 15px;
+  border-top: 2px solid #8b6b50;
+}
+
+.vl-character__kicker {
+  margin-bottom: 7px;
+  color: var(--vl-copper);
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.vl-character__identity h2 {
+  margin-bottom: 0;
+  font-family: "Staatliches", Impact, sans-serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+.vl-character__danger {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--vl-red);
+}
+
+.vl-character__danger span {
+  font-size: 0.58rem;
+  font-weight: 900;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+}
+
+.vl-character__description {
+  margin: 0;
+  padding: 0 16px 18px;
+  color: var(--vl-muted);
+  font-size: 0.77rem;
+  line-height: 1.8;
+}
+
+.vl-character__footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid #39343a;
+  background: #11131a;
+  color: #99939a;
+  font-size: 0.55rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.vl-character__footer span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vl-sticker {
+  position: absolute;
+  z-index: 3;
+  padding: 9px 12px;
+  border: 2px solid #090a0c;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  box-shadow: 3px 3px 0 #090a0c;
+}
+
+.vl-sticker--top {
+  top: 28px;
+  right: -5px;
+  transform: rotate(7deg);
+  background: var(--vl-red);
+  color: white;
+}
+
+.vl-sticker--bottom {
+  bottom: 45px;
+  left: -10px;
+  transform: rotate(-7deg);
+  background: var(--vl-teal);
+  color: #11131a;
+}
+
+.vl-hero__bottomline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+  max-width: 1440px;
+  margin: auto auto 0;
+  padding: 18px 0;
+  border-top: 1px solid #ffffff25;
+  color: #898894;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.vl-scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--vl-cream);
+  transition: color 180ms ease;
+}
+
+.vl-scroll:hover {
+  color: var(--vl-teal);
+}
+
+/* =========================================
+   UNIVERSO DE METRONIA
+   ========================================= */
+
+.vl-universe {
+  position: relative;
+  padding: 100px clamp(20px, 6vw, 88px);
+  background:
+    radial-gradient(ellipse at 0% 0%, #28232a 0%, transparent 40%),
+    #15161d;
+}
+
+.vl-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1264px;
+  margin: 0 auto 55px;
+}
+
+.vl-section-heading .vl-eyebrow {
+  margin-bottom: 20px;
+}
+
+.vl-section-heading h2,
+.vl-cta__copy h2 {
+  margin-bottom: 0;
+  font-family: "Staatliches", Impact, sans-serif;
+  font-size: clamp(2.7rem, 5.5vw, 5.4rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0.015em;
+}
+
+.vl-section-heading h2 span {
+  color: var(--vl-copper);
+}
+
+.vl-section-heading__note {
+  margin-bottom: 4px;
+  color: #8e8993;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  line-height: 2;
+  text-align: right;
+}
+
+.vl-section-heading__note span {
+  color: var(--vl-teal);
+}
+
+.vl-universe__intro {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 760px);
+  align-items: center;
+  gap: 25px;
+  max-width: 1264px;
+  margin: 0 auto 55px;
+  padding: 28px;
+  border: 1px solid var(--vl-border);
+  border-left: 4px solid var(--vl-copper);
+  background: #1b1c25;
+}
+
+.vl-universe__mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border: 1px solid #8b6b50;
+  color: var(--vl-copper);
+}
+
+.vl-universe__mark span {
+  position: absolute;
+  right: -8px;
+  bottom: -8px;
+  padding: 4px 6px;
+  background: var(--vl-bg);
+  color: var(--vl-teal);
+  font-family: "Staatliches", Impact, sans-serif;
+  font-size: 1.1rem;
+}
+
+.vl-universe__intro > p {
+  margin-bottom: 0;
+  color: var(--vl-muted);
+  font-size: 0.9rem;
+  line-height: 1.9;
+}
+
+.vl-universe__intro strong {
+  color: var(--vl-cream);
+}
+
+/* Tarjetas informativas */
+
+.vl-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 1264px;
+  margin: 0 auto;
+}
+
+.vl-feature {
+  --feature-accent: var(--vl-copper);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 370px;
+  padding: 25px;
+  overflow: hidden;
+  border: 1px solid #49414a;
+  background:
+    linear-gradient(145deg, #22232c 0%, #181921 75%);
+  box-shadow: 5px 5px 0 #08090c;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.vl-feature::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: var(--feature-accent);
+  content: "";
+}
+
+.vl-feature::after {
+  position: absolute;
+  right: -30px;
+  bottom: -40px;
+  width: 120px;
+  height: 120px;
+  border: 1px solid var(--feature-accent);
+  opacity: 0.12;
+  content: "";
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.vl-feature:hover {
+  transform: translateY(-6px);
+  border-color: var(--feature-accent);
+  box-shadow: 7px 8px 0 #08090c;
+}
+
+.vl-feature--copper {
+  --feature-accent: #e38a42;
+}
+
+.vl-feature--teal {
+  --feature-accent: #24d7d1;
+}
+
+.vl-feature--red {
+  --feature-accent: #bd4034;
+}
+
+.vl-feature__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 35px;
+}
+
+.vl-feature__number {
+  color: var(--feature-accent);
+  font-family: "Staatliches", Impact, sans-serif;
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.vl-feature__stamp {
+  padding: 6px 8px;
+  border: 1px solid #514b55;
+  color: #a6a0a8;
+  font-size: 0.52rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.vl-feature__icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  margin-bottom: 23px;
+  border: 1px solid var(--feature-accent);
+  background: #11131a;
+  color: var(--feature-accent);
+}
+
+.vl-feature__icon-pixel {
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  width: 10px;
+  height: 10px;
+  background: var(--feature-accent);
+}
+
+.vl-feature__category {
+  margin-bottom: 9px;
+  color: var(--feature-accent);
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+
+.vl-feature h3 {
+  margin-bottom: 14px;
+  font-family: "Staatliches", Impact, sans-serif;
+  font-size: clamp(1.6rem, 2.3vw, 2.05rem);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.vl-feature__description {
+  flex: 1;
+  margin-bottom: 25px;
+  color: var(--vl-muted);
+  font-size: 0.82rem;
+  line-height: 1.8;
+}
+
+.vl-feature__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 15px;
+  border-top: 1px solid #ffffff1c;
+  color: var(--feature-accent);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  transition: gap 180ms ease;
+}
+
+.vl-feature__link:hover {
+  gap: 17px;
+}
+
+/* =========================================
+   FICHA TÉCNICA
+   ========================================= */
+
+.vl-specs {
+  padding: 55px clamp(20px, 6vw, 88px) 70px;
+  border-top: 1px solid #ffffff17;
+  border-bottom: 1px solid #ffffff17;
+  background: #101116;
+}
+
+.vl-specs__heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 1264px;
+  margin: 0 auto 30px;
+  color: var(--vl-muted);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+}
+
+.vl-specs__line {
+  height: 1px;
+  flex: 1;
+  background: #45414a;
+}
+
+.vl-specs__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 1264px;
+  margin: 0 auto;
+  border: 1px solid #39343a;
+}
+
+.vl-spec {
+  position: relative;
+  min-width: 0;
+  padding: 28px 24px;
+  border-right: 1px solid #39343a;
+  background: #171820;
+}
+
+.vl-spec:last-child {
+  border-right: 0;
+}
+
+.vl-spec__index {
+  display: block;
+  margin-bottom: 25px;
+  color: var(--vl-copper);
+  font-family: "Staatliches", Impact, sans-serif;
+  font-size: 1.8rem;
+}
+
+.vl-spec > p {
+  margin-bottom: 9px;
+  color: #8f8992;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+}
+
+.vl-spec h3 {
+  margin-bottom: 0;
+  color: var(--vl-cream);
+  font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+/* =========================================
+   LLAMADA A LA ACCIÓN
+   ========================================= */
+
+.vl-cta {
+  position: relative;
+  isolation: isolate;
+  padding: 70px clamp(20px, 6vw, 88px) 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 10% 60%, #3a2928 0%, transparent 50%),
+    #c57a3e;
+  color: #17131a;
+}
+
+.vl-cta__pattern {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  opacity: 0.12;
+  background-image:
+    linear-gradient(#17131a 1px, transparent 1px),
+    linear-gradient(90deg, #17131a 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: linear-gradient(90deg, black, transparent);
+}
+
+.vl-cta__content {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(20px, 4vw, 55px);
+  max-width: 1264px;
+  margin: 0 auto;
+  padding-bottom: 65px;
+}
+
+.vl-cta__symbol {
+  display: grid;
+  place-items: center;
+  width: 90px;
+  height: 90px;
+  border: 2px solid #17131a;
+  color: #17131a;
+  transform: rotate(-5deg);
+}
+
+.vl-cta__copy .vl-eyebrow {
+  color: #30201a;
+}
+
+.vl-cta__copy .vl-eyebrow__line {
+  background: #30201a;
+}
+
+.vl-cta__copy h2 {
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
+  text-shadow: 2px 2px 0 #f4c18d;
+}
+
+.vl-cta__copy > p:last-child {
+  margin: 15px 0 0;
+  color: #3c2a23;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.vl-button--dark {
+  border-color: #11131a;
+  background: #11131a;
+  color: var(--vl-cream);
+  box-shadow: 4px 4px 0 #f4c18d;
+}
+
+.vl-button--dark:hover {
+  background: #28232a;
+}
+
+.vl-cta__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  max-width: 1264px;
+  margin: 0 auto;
+  padding: 18px 0;
+  border-top: 1px solid #17131a55;
+  color: #30201a;
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+/* =========================================
+   ANIMACIONES
+   ========================================= */
+
+@keyframes vl-status-pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 10px #24d7d188;
+  }
+  50% {
+    opacity: 0.5;
+    box-shadow: 0 0 3px #24d7d144;
+  }
+}
+
+@keyframes vl-gear-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes vl-energy-flash {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px #24d7d1);
+  }
+  50% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 14px #24d7d1);
+  }
+}
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 1000px) {
+  .vl-hero {
+    padding-top: 55px;
+  }
+
+  .vl-hero__content {
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 0.8fr);
+    gap: 35px;
+  }
+
+  .vl-hero-title {
+    font-size: clamp(3.7rem, 8vw, 6rem);
+  }
+
+  .vl-character {
+    padding: 10px;
+  }
+
+  .vl-character__scene {
+    min-height: 245px;
+  }
+
+  .vl-character__portrait {
+    width: 120px;
+    height: 145px;
+  }
+
+  .vl-feature-grid {
+    gap: 15px;
+  }
+
+  .vl-feature {
+    padding: 20px;
+  }
+
+  .vl-cta__content {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .vl-cta__content > .vl-button {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+/* =========================================
+   MÓVIL
+   ========================================= */
+
+@media (max-width: 700px) {
+  .vl-hero {
+    min-height: auto;
+    padding: 45px 20px 0;
+  }
+
+  .vl-hero__content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 45px;
+    padding-bottom: 45px;
+  }
+
+  .vl-hero__copy {
+    width: 100%;
+  }
+
+  .vl-status {
+    margin-bottom: 25px;
+  }
+
+  .vl-hero-title {
+    font-size: clamp(3.5rem, 15vw, 6rem);
+    letter-spacing: 0;
+  }
+
+  .vl-hero__description {
+    font-size: 0.9rem;
+  }
+
+  .vl-hero__actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .vl-button {
+    width: 100%;
+  }
+
+  .vl-hero__metadata {
+    gap: 12px;
+  }
+
+  .vl-character {
+    width: min(100%, 410px);
+  }
+
+  .vl-character__scene {
+    min-height: 260px;
+  }
+
+  .vl-hero__bottomline {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-size: 0.52rem;
+  }
+
+  .vl-hero__bottomline > span:first-child {
+    display: none;
+  }
+
+  .vl-universe {
+    padding: 70px 20px;
+  }
+
+  .vl-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 22px;
+    margin-bottom: 35px;
+  }
+
+  .vl-section-heading__note {
+    text-align: left;
+  }
+
+  .vl-universe__intro {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 22px;
+    margin-bottom: 35px;
+  }
+
+  .vl-feature-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .vl-feature {
+    min-height: 330px;
+  }
+
+  .vl-specs {
+    padding: 45px 20px;
+  }
+
+  .vl-specs__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .vl-spec {
+    padding: 22px 17px;
+    border-bottom: 1px solid #39343a;
+  }
+
+  .vl-spec:nth-child(2) {
+    border-right: 0;
+  }
+
+  .vl-spec:nth-child(3),
+  .vl-spec:nth-child(4) {
+    border-bottom: 0;
+  }
+
+  .vl-cta {
+    padding: 50px 20px 0;
+  }
+
+  .vl-cta__content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 25px;
+    padding-bottom: 45px;
+  }
+
+  .vl-cta__symbol {
+    width: 65px;
+    height: 65px;
+  }
+
+  .vl-cta__symbol svg {
+    width: 38px;
+    height: 38px;
+  }
+
+  .vl-cta__content > .vl-button {
+    grid-column: auto;
+    justify-self: stretch;
+  }
+
+  .vl-cta__bottom {
+    font-size: 0.5rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .vl-hero-title {
+    font-size: 3.1rem;
+  }
+
+  .vl-title-caption {
+    gap: 6px;
+    font-size: 0.53rem;
+  }
+
+  .vl-character__topbar {
+    font-size: 0.5rem;
+  }
+
+  .vl-character__identity {
+    padding: 16px 12px 12px;
+  }
+
+  .vl-character__description {
+    padding: 0 12px 15px;
+  }
+
+  .vl-spec {
+    padding: 18px 12px;
+  }
+}
+
+/* Respetar la preferencia de movimiento reducido */
+
+@media (prefers-reduced-motion: reduce) {
+  .vl-home *,
+  .vl-home *::before,
+  .vl-home *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
