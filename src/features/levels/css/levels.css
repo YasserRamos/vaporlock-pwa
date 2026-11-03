@@ -417,6 +417,24 @@
   }
 }
 
+.level-card-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.levels-feedback {
+  padding: 32px 20px;
+  text-align: center;
+  font-size: 0.95rem;
+  opacity: 0.75;
+}
+
+.levels-feedback--error {
+  color: #d76b61;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .levels-page *,
   .levels-page *::before,

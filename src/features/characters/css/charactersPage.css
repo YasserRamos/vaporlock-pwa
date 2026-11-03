@@ -389,6 +389,15 @@
   }
 }
 
+.character-modal__portrait-image {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .characters-page *,
   .characters-page *::before,

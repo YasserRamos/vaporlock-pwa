@@ -27,6 +27,7 @@ export default function CharacterDetails({ character, onClose }: Props) {
     };
 
     const previousOverflow = document.body.style.overflow;
+
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", handleKey);
 
@@ -35,6 +36,10 @@ export default function CharacterDetails({ character, onClose }: Props) {
       window.removeEventListener("keydown", handleKey);
     };
   }, [character, onClose]);
+
+  const appearances = character?.appearance ?? [];
+  const actions = character?.actions ?? [];
+  const abilities = character?.abilities ?? [];
 
   return (
     <AnimatePresence>
@@ -96,29 +101,44 @@ export default function CharacterDetails({ character, onClose }: Props) {
                 transition={{ delay: 0.12 }}
               >
                 <div className="character-modal__emblem">
-                  <div className="character-modal__emblem-grid" />
-                  <Cog
-                    className="character-modal__gear"
-                    size={106}
-                    strokeWidth={1}
-                  />
-                  <Shield
-                    className="character-modal__shield"
-                    size={62}
-                    strokeWidth={1.5}
-                  />
-                  <Zap
-                    className="character-modal__zap"
-                    size={24}
-                    fill="currentColor"
-                  />
+                  {character.portraitUrl ? (
+                    <img
+                      src={character.portraitUrl}
+                      alt={`Retrato de ${character.name}`}
+                      className="character-modal__portrait-image"
+                    />
+                  ) : (
+                    <>
+                      <div className="character-modal__emblem-grid" />
+
+                      <Cog
+                        className="character-modal__gear"
+                        size={106}
+                        strokeWidth={1}
+                      />
+
+                      <Shield
+                        className="character-modal__shield"
+                        size={62}
+                        strokeWidth={1.5}
+                      />
+
+                      <Zap
+                        className="character-modal__zap"
+                        size={24}
+                        fill="currentColor"
+                      />
+                    </>
+                  )}
                 </div>
 
                 <div className="character-modal__identity-copy">
                   <span className="character-modal__section-label">
                     PERFIL
                   </span>
+
                   <h3>{character.name}</h3>
+
                   <span className="character-modal__role">
                     {character.role}
                   </span>
@@ -154,7 +174,9 @@ export default function CharacterDetails({ character, onClose }: Props) {
                   >
                     <Shield size={21} />
                     <span>ACTITUD</span>
-                    <strong>{character.aggressiveness}</strong>
+                    <strong>
+                      {character.aggressiveness || "Sin información"}
+                    </strong>
                   </motion.div>
 
                   <motion.div
@@ -177,15 +199,21 @@ export default function CharacterDetails({ character, onClose }: Props) {
                 </div>
 
                 <div className="character-modal__tags">
-                  {character.appearance.map((appearance) => (
-                    <motion.span
-                      key={appearance}
-                      className="character-modal__tag"
-                      whileHover={{ y: -2 }}
-                    >
-                      {appearance}
-                    </motion.span>
-                  ))}
+                  {appearances.length > 0 ? (
+                    appearances.map((appearance) => (
+                      <motion.span
+                        key={appearance}
+                        className="character-modal__tag"
+                        whileHover={{ y: -2 }}
+                      >
+                        {appearance}
+                      </motion.span>
+                    ))
+                  ) : (
+                    <p className="character-modal__empty">
+                      Sin apariciones registradas.
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -198,8 +226,8 @@ export default function CharacterDetails({ character, onClose }: Props) {
                 </div>
 
                 <div className="character-modal__tags">
-                  {character.actions.length > 0 ? (
-                    character.actions.map((action) => (
+                  {actions.length > 0 ? (
+                    actions.map((action) => (
                       <motion.span
                         key={action}
                         className="character-modal__tag character-modal__tag--action"
@@ -225,8 +253,8 @@ export default function CharacterDetails({ character, onClose }: Props) {
                 </div>
 
                 <div className="character-modal__tags">
-                  {character.abilities.length > 0 ? (
-                    character.abilities.map((ability) => (
+                  {abilities.length > 0 ? (
+                    abilities.map((ability) => (
                       <motion.span
                         key={ability}
                         className="character-modal__tag character-modal__tag--ability"
@@ -251,6 +279,7 @@ export default function CharacterDetails({ character, onClose }: Props) {
                 <span className="character-modal__signal" />
                 SISTEMA DE ARCHIVOS ACTIVO
               </span>
+
               <button type="button" onClick={onClose}>
                 CERRAR ARCHIVO <X size={15} />
               </button>

@@ -15,5 +15,6 @@ export type Character = {
   abilities: string[];
   hp: string | null;
   description: string;
+  portraitUrl?: string | null;
 };
 

@@ -23,6 +23,10 @@ export default function CharacterCard({ character, onSelect }: Props) {
     .join("")
     .slice(0, 3);
 
+  const appearances = character.appearance?.length
+    ? character.appearance.join(" / ")
+    : "Sin apariciones registradas";
+
   return (
     <motion.article
       layout
@@ -37,7 +41,6 @@ export default function CharacterCard({ character, onSelect }: Props) {
       }}
       className="character-card group flex h-full flex-col"
     >
-      {/* Ilustración del personaje */}
       <div className="character-card__art pixel-texture">
         <div className="character-card__art-grid" aria-hidden="true" />
         <div className="character-card__art-glow" aria-hidden="true" />
@@ -48,7 +51,11 @@ export default function CharacterCard({ character, onSelect }: Props) {
         <span className="character-card__corner character-card__corner--br" />
 
         <span className="character-card__role">
-          <span className={`character-card__role-badge ${roleColors[character.role] ?? ""}`}>
+          <span
+            className={`character-card__role-badge ${
+              roleColors[character.role] ?? ""
+            }`}
+          >
             {character.role}
           </span>
         </span>
@@ -58,14 +65,26 @@ export default function CharacterCard({ character, onSelect }: Props) {
           whileHover={{ scale: 1.08, y: -3 }}
           transition={{ type: "spring", stiffness: 260, damping: 15 }}
         >
-          <span className="character-card__initials" aria-hidden="true">
-            {initials}
-          </span>
-          <Swords
-            className="character-card__portrait-icon"
-            size={24}
-            aria-hidden="true"
-          />
+          {character.portraitUrl ? (
+            <img
+              src={character.portraitUrl}
+              alt={`Retrato de ${character.name}`}
+              className="character-card__portrait-image"
+              loading="lazy"
+            />
+          ) : (
+            <>
+              <span className="character-card__initials" aria-hidden="true">
+                {initials}
+              </span>
+
+              <Swords
+                className="character-card__portrait-icon"
+                size={24}
+                aria-hidden="true"
+              />
+            </>
+          )}
         </motion.div>
 
         <span className="character-card__art-caption">
@@ -74,12 +93,16 @@ export default function CharacterCard({ character, onSelect }: Props) {
         </span>
       </div>
 
-      {/* Información */}
       <div className="character-card__body">
         <div className="character-card__title-row">
           <div className="min-w-0">
-            <p className="character-card__eyebrow">ARCHIVO DE METRONIA</p>
-            <h3 className="character-card__name">{character.name}</h3>
+            <p className="character-card__eyebrow">
+              ARCHIVO DE METRONIA
+            </p>
+
+            <h3 className="character-card__name">
+              {character.name}
+            </h3>
           </div>
 
           <span className="character-card__index" aria-hidden="true">
@@ -98,7 +121,7 @@ export default function CharacterCard({ character, onSelect }: Props) {
             <Shield size={15} className="character-card__defense-icon" />
             <span className="character-card__stat-label">ACTITUD</span>
             <strong className="character-card__aggression">
-              {character.aggressiveness}
+              {character.aggressiveness || "Sin información"}
             </strong>
           </div>
         </div>
@@ -107,7 +130,8 @@ export default function CharacterCard({ character, onSelect }: Props) {
           <span className="character-card__appearance-label">
             APARICIÓN
           </span>
-          <p>{character.appearance.join(" / ")}</p>
+
+          <p>{appearances}</p>
         </div>
 
         <button

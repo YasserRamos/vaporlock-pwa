@@ -1,4 +1,5 @@
 ﻿
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
 import {
   ArrowLeft,
@@ -10,118 +11,252 @@ import {
   BookOpen,
   Bug,
   ClipboardList,
+  Wrench,
+  ExternalLink,
+  RefreshCw,
 } from "lucide-react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ComponentType } from "react";
 import { Link } from "react-router-dom";
 import "../css/team.css";
 
-const departments = [
-  {
-    number: "01",
-    title: "Diseño",
-    icon: Palette,
+const API_URL = (import.meta.env.VITE_API_URL ?? "").replace(/\/+$/, "");
+
+interface MiembroEquipoApi {
+  pkMiembroEquipo: number;
+  fkMediaPortada: number | null;
+  nombre: string;
+  rol: string;
+  biografia: string | null;
+  enlace: string | null;
+  orden: number;
+}
+
+interface TeamRole {
+  title: string;
+  color: string;
+  icon: ComponentType<{ size?: number; strokeWidth?: number }>;
+  members: MiembroEquipoApi[];
+}
+
+type RequestState = "loading" | "success" | "error" | "empty" | "invalid";
+
+function isMiembroEquipo(value: unknown): value is MiembroEquipoApi {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  const member = value as Record<string, unknown>;
+
+  return (
+    typeof member.pkMiembroEquipo === "number" &&
+    (typeof member.fkMediaPortada === "number" ||
+      member.fkMediaPortada === null) &&
+    typeof member.nombre === "string" &&
+    typeof member.rol === "string" &&
+    (typeof member.biografia === "string" ||
+      member.biografia === null) &&
+    (typeof member.enlace === "string" || member.enlace === null) &&
+    typeof member.orden === "number"
+  );
+}
+
+function getRolePresentation(rol: string) {
+  const normalizedRole = rol.toLowerCase();
+
+  if (
+    normalizedRole.includes("diseño") ||
+    normalizedRole.includes("arte")
+  ) {
+    return {
+      icon: Palette,
+      color: "#e99545",
+    };
+  }
+
+  if (
+    normalizedRole.includes("program") ||
+    normalizedRole.includes("desarroll")
+  ) {
+    return {
+      icon: Code2,
+      color: "#39d5cb",
+    };
+  }
+
+  if (normalizedRole.includes("anim")) {
+    return {
+      icon: Clapperboard,
+      color: "#39d5cb",
+    };
+  }
+
+  if (
+    normalizedRole.includes("audio") ||
+    normalizedRole.includes("sonido") ||
+    normalizedRole.includes("música")
+  ) {
+    return {
+      icon: Music2,
+      color: "#e99545",
+    };
+  }
+
+  if (
+    normalizedRole.includes("narrativa") ||
+    normalizedRole.includes("escritura")
+  ) {
+    return {
+      icon: BookOpen,
+      color: "#39d5cb",
+    };
+  }
+
+  if (
+    normalizedRole.includes("qa") ||
+    normalizedRole.includes("calidad") ||
+    normalizedRole.includes("prueba")
+  ) {
+    return {
+      icon: Bug,
+      color: "#e99545",
+    };
+  }
+
+  if (
+    normalizedRole.includes("gestión") ||
+    normalizedRole.includes("gestion") ||
+    normalizedRole.includes("coordinación") ||
+    normalizedRole.includes("coordinacion")
+  ) {
+    return {
+      icon: ClipboardList,
+      color: "#39d5cb",
+    };
+  }
+
+  return {
+    icon: Wrench,
     color: "#e99545",
-    people: [
-      "Juan Jose Canché Ay",
-      "Alexander David Rosales Pacheco",
-    ],
-    tasks: [
-      "Definir las mecánicas del juego.",
-      "Diseñar habilidades y ataques.",
-      "Definir los sistemas de juego.",
-    ],
-  },
-  {
-    number: "02",
-    title: "Programación",
-    icon: Code2,
-    color: "#39d5cb",
-    people: ["Yasser Omar Apango Ramos"],
-    tasks: [
-      "Implementar las mecánicas en Unity.",
-      "Desarrollar los sistemas del videojuego.",
-    ],
-  },
-  {
-    number: "03",
-    title: "Arte",
-    icon: Palette,
-    color: "#e99545",
-    people: [
-      "Juan Jose Canché Ay",
-      "Alexander David Rosales Pacheco",
-      "Gustavo Lopez Alvarado",
-      "Miguel Angel Cordova Sanchez",
-    ],
-    tasks: [
-      "Crear personajes y enemigos.",
-      "Diseñar armas e ítems.",
-      "Crear los fondos del videojuego.",
-    ],
-  },
-  {
-    number: "04",
-    title: "Animación",
-    icon: Clapperboard,
-    color: "#39d5cb",
-    people: ["Gustavo Lopez Alvarado"],
-    tasks: [
-      "Crear animaciones de personajes y enemigos.",
-      "Integrar las animaciones en el videojuego.",
-    ],
-  },
-  {
-    number: "05",
-    title: "Audio",
-    icon: Music2,
-    color: "#e99545",
-    people: ["Juan Jose Canché Ay"],
-    tasks: [
-      "Crear efectos de sonido.",
-      "Integrar los recursos de audio.",
-    ],
-  },
-  {
-    number: "06",
-    title: "Narrativa",
-    icon: BookOpen,
-    color: "#39d5cb",
-    people: [
-      "Alexander David Rosales Pacheco",
-      "Miguel Angel Cordova Sanchez",
-    ],
-    tasks: [
-      "Desarrollar la historia.",
-      "Documentar personajes y elementos narrativos.",
-    ],
-  },
-  {
-    number: "07",
-    title: "QA",
-    icon: Bug,
-    color: "#e99545",
-    people: ["Yasser Omar Apango Ramos"],
-    tasks: [
-      "Comprobar el funcionamiento del videojuego.",
-      "Detectar errores.",
-      "Verificar las correcciones.",
-    ],
-  },
-  {
-    number: "08",
-    title: "Gestión",
-    icon: ClipboardList,
-    color: "#39d5cb",
-    people: ["Miguel Angel Cordova Sanchez"],
-    tasks: [
-      "Coordinar las tareas.",
-      "Dar seguimiento al avance.",
-      "Organizar los entregables.",
-    ],
-  },
-];
+  };
+}
+
+function getExternalLink(value: string | null): string | null {
+  if (!value) return null;
+
+  try {
+    const url = new URL(value);
+
+    if (url.protocol === "http:" || url.protocol === "https:") {
+      return url.href;
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
 
 export default function TeamPage() {
+  const [members, setMembers] = useState<MiembroEquipoApi[]>([]);
+  const [status, setStatus] = useState<RequestState>("loading");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [retry, setRetry] = useState(0);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchMembers = async () => {
+      if (!API_URL) {
+        setMembers([]);
+        setStatus("error");
+        setErrorMessage(
+          "No se ha configurado la dirección de la API. Revisa VITE_API_URL."
+        );
+        return;
+      }
+
+      setStatus("loading");
+      setErrorMessage("");
+
+      try {
+        const response = await fetch(`${API_URL}/miembros-equipo`, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            `El servidor respondió con el código ${response.status}.`
+          );
+        }
+
+        const data: unknown = await response.json();
+
+        if (
+          !Array.isArray(data) ||
+          !data.every(isMiembroEquipo)
+        ) {
+          setMembers([]);
+          setStatus("invalid");
+          return;
+        }
+
+        setMembers(data);
+
+        setStatus(data.length > 0 ? "success" : "empty");
+      } catch (error) {
+        if (error instanceof Error && error.name === "AbortError") {
+          return;
+        }
+
+        setMembers([]);
+        setStatus("error");
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "No se pudo establecer conexión con el servidor."
+        );
+      }
+    };
+
+    void fetchMembers();
+
+    return () => controller.abort();
+  }, [retry]);
+
+  const roles = useMemo<TeamRole[]>(() => {
+    const grouped = new Map<string, MiembroEquipoApi[]>();
+
+    members.forEach((member) => {
+      const role = member.rol.trim() || "Sin rol asignado";
+      const existing = grouped.get(role);
+
+      if (existing) {
+        existing.push(member);
+      } else {
+        grouped.set(role, [member]);
+      }
+    });
+
+    return Array.from(grouped.entries()).map(([title, roleMembers]) => {
+      const presentation = getRolePresentation(title);
+
+      return {
+        title,
+        color: presentation.color,
+        icon: presentation.icon,
+        members: roleMembers,
+      };
+    });
+  }, [members]);
+
+  const handleRetry = () => {
+    setRetry((current) => current + 1);
+  };
+
   return (
     <main className="team-page">
       <div className="team-pixel-background" aria-hidden="true" />
@@ -158,8 +293,10 @@ export default function TeamPage() {
           <div className="team-header-stats">
             <div className="team-stat-main">
               <Users size={29} strokeWidth={1.7} />
-              <span>ÁREAS DE TRABAJO</span>
-              <strong>08</strong>
+              <span>INTEGRANTES</span>
+              <strong>
+                {status === "success" ? String(members.length).padStart(2, "0") : "--"}
+              </strong>
             </div>
 
             <div className="team-stat-bottom">
@@ -188,77 +325,161 @@ export default function TeamPage() {
                 <span className="team-pixel-dot" />
                 DIRECTORIO DEL PROYECTO
               </span>
-              <h2>ROLES Y RESPONSABILIDADES</h2>
+              <h2>INTEGRANTES Y ROLES</h2>
             </div>
 
-            <span className="team-total">08 DEPARTAMENTOS</span>
+            <span className="team-total">
+              {status === "success"
+                ? `${String(roles.length).padStart(2, "0")} ROLES`
+                : "-- ROLES"}
+            </span>
           </div>
 
-          <div className="team-department-grid">
-            {departments.map((department, index) => {
-              const Icon = department.icon;
+          {status === "loading" && (
+            <div className="team-feedback" role="status">
+              <RefreshCw size={26} className="team-loading-icon" />
+              <h3>CONSULTANDO ARCHIVO DEL PERSONAL...</h3>
+              <p>Conectando con los registros de Metronia.</p>
+            </div>
+          )}
 
-              return (
-                <motion.article
-                  key={department.number}
-                  className="team-department"
-                  style={
-                    { "--department-color": department.color } as CSSProperties
-                  }
-                  initial={{ opacity: 0, y: 14 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{
-                    duration: 0.3,
-                    delay: (index % 2) * 0.07,
-                  }}
+          {status === "error" && (
+            <div className="team-feedback team-feedback-error" role="alert">
+              <RefreshCw size={27} />
+              <div>
+                <h3>NO SE PUDO CARGAR EL EQUIPO.</h3>
+                <p>{errorMessage}</p>
+                <button
+                  type="button"
+                  className="team-retry"
+                  onClick={handleRetry}
                 >
-                  <div className="team-department-header">
-                    <span className="team-department-number">
-                      {department.number}
-                    </span>
+                  <RefreshCw size={15} />
+                  REINTENTAR
+                </button>
+              </div>
+            </div>
+          )}
 
-                    <div className="team-department-title">
-                      <span>DEPARTAMENTO</span>
-                      <h3>{department.title}</h3>
+          {status === "invalid" && (
+            <div className="team-feedback team-feedback-error" role="alert">
+              <h3>FORMATO DE DATOS NO VÁLIDO.</h3>
+              <p>
+                La respuesta del servidor no coincide con la estructura
+                esperada para los integrantes del equipo.
+              </p>
+              <button
+                type="button"
+                className="team-retry"
+                onClick={handleRetry}
+              >
+                <RefreshCw size={15} />
+                REINTENTAR
+              </button>
+            </div>
+          )}
+
+          {status === "empty" && (
+            <div className="team-feedback">
+              <Users size={28} />
+              <h3>NO HAY INTEGRANTES PUBLICADOS.</h3>
+              <p>El directorio todavía no contiene registros disponibles.</p>
+            </div>
+          )}
+
+          {status === "success" && (
+            <div className="team-department-grid">
+              {roles.map((role, index) => {
+                const Icon = role.icon;
+
+                return (
+                  <motion.article
+                    key={role.title}
+                    className="team-department"
+                    style={
+                      { "--department-color": role.color } as CSSProperties
+                    }
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.1 }}
+                    transition={{
+                      duration: 0.3,
+                      delay: (index % 2) * 0.07,
+                    }}
+                  >
+                    <div className="team-department-header">
+                      <span className="team-department-number">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+
+                      <div className="team-department-title">
+                        <span>ROL DEL PROYECTO</span>
+                        <h3>{role.title}</h3>
+                      </div>
+
+                      <div className="team-department-icon">
+                        <Icon size={23} strokeWidth={1.8} />
+                      </div>
                     </div>
 
-                    <div className="team-department-icon">
-                      <Icon size={23} strokeWidth={1.8} />
-                    </div>
-                  </div>
+                    <div className="team-department-content">
+                      <div className="team-members">
+                        <h4>INTEGRANTES</h4>
+                        <ul>
+                          {role.members.map((member) => (
+                            <li key={member.pkMiembroEquipo}>
+                              <div className="team-member-entry">
+                                {member.fkMediaPortada !== null && (
+                                  <img
+                                    className="team-member-avatar"
+                                    src={`${API_URL}/media/${member.fkMediaPortada}`}
+                                    alt={
+                                      member.nombre
+                                        ? `Fotografía de ${member.nombre}`
+                                        : ""
+                                    }
+                                    loading="lazy"
+                                  />
+                                )}
 
-                  <div className="team-department-content">
-                    <div className="team-members">
-                      <h4>INTEGRANTES</h4>
-                      <ul>
-                        {department.people.map((person) => (
-                          <li key={person}>{person}</li>
-                        ))}
-                      </ul>
+                                <div className="team-member-information">
+                                  <strong>{member.nombre}</strong>
+
+                                  {member.biografia && (
+                                    <p>{member.biografia}</p>
+                                  )}
+
+                                  {getExternalLink(member.enlace) && (
+                                    <a
+                                      href={getExternalLink(member.enlace)!}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="team-member-link"
+                                    >
+                                      VER ENLACE
+                                      <ExternalLink size={13} />
+                                    </a>
+                                  )}
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
 
-                    <div className="team-responsibilities">
-                      <h4>RESPONSABILIDADES</h4>
-                      <ul>
-                        {department.tasks.map((task) => (
-                          <li key={task}>{task}</li>
-                        ))}
-                      </ul>
+                    <div className="team-department-footer">
+                      <span className="team-status-indicator" />
+                      ÁREA REGISTRADA
+                      <span className="team-footer-code">
+                        VL_{String(index + 1).padStart(2, "0")}
+                      </span>
                     </div>
-                  </div>
-
-                  <div className="team-department-footer">
-                    <span className="team-status-indicator" />
-                    ÁREA REGISTRADA
-                    <span className="team-footer-code">
-                      VL_{department.number}
-                    </span>
-                  </div>
-                </motion.article>
-              );
-            })}
-          </div>
+                  </motion.article>
+                );
+              })}
+            </div>
+          )}
         </section>
 
         <footer className="team-footer">

@@ -1088,3 +1088,133 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+
+
+/* ================================
+   STORY - ESTADOS DE LA API
+================================ */
+
+.story-feedback {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 260px;
+  padding: 40px 24px;
+  border: 1px solid rgba(217, 148, 72, 0.3);
+  background: rgba(18, 20, 25, 0.92);
+  text-align: center;
+  color: #e9e1d2;
+}
+
+.story-feedback > svg {
+  color: #d99448;
+}
+
+.story-feedback h3 {
+  margin: 0;
+  color: #f0c477;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.story-feedback p {
+  max-width: 460px;
+  margin: 0;
+  color: #b8b5ad;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.story-feedback-error {
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 20px;
+  min-height: 180px;
+  padding: 30px;
+  border-left: 4px solid #d99448;
+  text-align: left;
+}
+
+.story-feedback-error > svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.story-feedback-error > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.story-feedback-error h3 {
+  font-size: 16px;
+}
+
+.story-feedback-error p {
+  overflow-wrap: anywhere;
+}
+
+.story-http-code {
+  color: #d99448;
+  font-family: monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.story-retry {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid #d99448;
+  background: #d99448;
+  color: #171717;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.story-retry:hover {
+  background: transparent;
+  color: #e9b66f;
+  transform: translateY(-2px);
+}
+
+.story-retry:focus-visible {
+  outline: 2px solid #f0c477;
+  outline-offset: 4px;
+}
+
+.story-retry svg {
+  width: 15px;
+  height: 15px;
+}
+
+@media (max-width: 520px) {
+  .story-feedback-error {
+    flex-direction: column;
+    gap: 14px;
+    padding: 24px 18px;
+  }
+
+  .story-feedback-error > div {
+    width: 100%;
+  }
+}

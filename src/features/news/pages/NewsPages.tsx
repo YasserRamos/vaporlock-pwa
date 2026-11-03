@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import {
   ArrowLeft,
@@ -18,12 +18,22 @@ type NewsStatus =
   | "error"
   | "invalid-data";
 
+interface NoticiaApi {
+  pkNoticia: number;
+  fkMediaPortada: number | null;
+  titulo: string;
+  slug: string;
+  resumen: string | null;
+  contenido: string;
+  fechaCreacion: string;
+  fechaPublicacion: string | null;
+}
+
 interface NewsArticle {
-  id: string;
+  id: number;
   title: string;
   summary: string;
   imageUrl: string | null;
-  category: string;
   publishedAt: string;
   slug: string;
 }
@@ -35,10 +45,7 @@ interface NewsPageData {
   errorMessage?: string;
 }
 
-const initialNews: NewsPageData = {
-  articles: [],
-  status: "empty",
-};
+const API_URL = (import.meta.env.VITE_API_URL ?? "").replace(/\/+$/, "");
 
 function getHttpErrorMessage(statusCode?: number): string {
   if (statusCode === undefined) {
@@ -93,6 +100,43 @@ function formatNewsDate(date: string): string {
   }).format(parsedDate);
 }
 
+function isValidNews(data: unknown): data is NoticiaApi[] {
+  if (!Array.isArray(data)) {
+    return false;
+  }
+
+  return data.every((item) => {
+    return (
+      typeof item === "object" &&
+      item !== null &&
+      typeof item.pkNoticia === "number" &&
+      (item.fkMediaPortada === null ||
+        typeof item.fkMediaPortada === "number") &&
+      typeof item.titulo === "string" &&
+      typeof item.slug === "string" &&
+      (item.resumen === null || typeof item.resumen === "string") &&
+      typeof item.contenido === "string" &&
+      typeof item.fechaCreacion === "string" &&
+      (item.fechaPublicacion === null ||
+        typeof item.fechaPublicacion === "string")
+    );
+  });
+}
+
+function mapNewsArticle(noticia: NoticiaApi): NewsArticle {
+  return {
+    id: noticia.pkNoticia,
+    title: noticia.titulo,
+    summary: noticia.resumen ?? "",
+    imageUrl:
+      noticia.fkMediaPortada !== null
+        ? `${API_URL}/media/${noticia.fkMediaPortada}`
+        : null,
+    publishedAt: noticia.fechaPublicacion ?? noticia.fechaCreacion,
+    slug: noticia.slug,
+  };
+}
+
 function NewsSkeleton() {
   return (
     <div className="news-skeleton-list" aria-label="Cargando noticias">
@@ -112,14 +156,94 @@ function NewsSkeleton() {
 }
 
 export default function NewsPage() {
-  // Se sustituirá por la respuesta del servicio cuando conectemos la API.
-  const [news] = useState<NewsPageData>(initialNews);
+  const [news, setNews] = useState<NewsPageData>({
+    articles: [],
+    status: "loading",
+  });
 
-  const articles = [...news.articles].sort(
-    (a, b) =>
-      new Date(b.publishedAt).getTime() -
-      new Date(a.publishedAt).getTime(),
-  );
+  const [retryKey, setRetryKey] = useState(0);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchNews() {
+      setNews({
+        articles: [],
+        status: "loading",
+      });
+
+      try {
+        if (!API_URL) {
+          throw new Error(
+            "No se encontró la variable VITE_API_URL en la configuración.",
+          );
+        }
+
+        const response = await fetch(`${API_URL}/noticias`, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          setNews({
+            articles: [],
+            status: "error",
+            statusCode: response.status,
+          });
+          return;
+        }
+
+        const data: unknown = await response.json();
+
+        if (!isValidNews(data)) {
+          setNews({
+            articles: [],
+            status: "invalid-data",
+            errorMessage:
+              "La respuesta de la API no coincide con la estructura esperada de NoticiaDto.",
+          });
+          return;
+        }
+
+        const articles = data
+          .map(mapNewsArticle)
+          .sort(
+            (a, b) =>
+              new Date(b.publishedAt).getTime() -
+              new Date(a.publishedAt).getTime(),
+          );
+
+        setNews({
+          articles,
+          status: articles.length > 0 ? "success" : "empty",
+        });
+      } catch (error) {
+        if (error instanceof Error && error.name === "AbortError") {
+          return;
+        }
+
+        setNews({
+          articles: [],
+          status: "error",
+          errorMessage:
+            error instanceof Error
+              ? error.message
+              : getHttpErrorMessage(),
+        });
+      }
+    }
+
+    void fetchNews();
+
+    return () => {
+      controller.abort();
+    };
+  }, [retryKey]);
+
+  const articles = news.articles;
 
   return (
     <main className="news-page">
@@ -175,9 +299,7 @@ export default function NewsPage() {
             </span>
           </div>
 
-          {news.status === "loading" && (
-            <NewsSkeleton />
-          )}
+          {news.status === "loading" && <NewsSkeleton />}
 
           {news.status === "empty" && (
             <div className="news-empty" role="status">
@@ -205,6 +327,7 @@ export default function NewsPage() {
 
               <div>
                 <h3>NO SE PUDIERON CARGAR LAS NOTICIAS.</h3>
+
                 <p>
                   {news.errorMessage ??
                     getHttpErrorMessage(news.statusCode)}
@@ -215,6 +338,15 @@ export default function NewsPage() {
                     HTTP {news.statusCode}
                   </span>
                 )}
+
+                <button
+                  type="button"
+                  className="news-read-more"
+                  onClick={() => setRetryKey((current) => current + 1)}
+                >
+                  REINTENTAR
+                  <RefreshCw size={16} />
+                </button>
               </div>
             </div>
           )}
@@ -229,21 +361,20 @@ export default function NewsPage() {
                   {news.errorMessage ??
                     "La respuesta recibida no tiene el formato esperado."}
                 </p>
+
+                <button
+                  type="button"
+                  className="news-read-more"
+                  onClick={() => setRetryKey((current) => current + 1)}
+                >
+                  REINTENTAR
+                  <RefreshCw size={16} />
+                </button>
               </div>
             </div>
           )}
 
-          {news.status === "success" && articles.length === 0 && (
-            <div className="news-empty" role="status">
-              <Newspaper size={34} strokeWidth={1.2} />
-              <h3>NO HAY PUBLICACIONES DISPONIBLES.</h3>
-              <p>
-                La consulta se completó, pero no se encontraron noticias.
-              </p>
-            </div>
-          )}
-
-          {news.status === "success" && articles.length > 0 && (
+          {news.status === "success" && (
             <div className="news-timeline">
               {articles.map((article, index) => (
                 <motion.article
@@ -269,7 +400,7 @@ export default function NewsPage() {
                       {article.imageUrl ? (
                         <img
                           src={article.imageUrl}
-                          alt=""
+                          alt={`Portada de ${article.title}`}
                           loading="lazy"
                         />
                       ) : (
@@ -290,7 +421,7 @@ export default function NewsPage() {
                     <div className="news-article-body">
                       <div className="news-article-meta">
                         <span className="news-category-tag">
-                          {article.category}
+                          COMUNICADO
                         </span>
                         <span>VAPORLOCK // NEWS</span>
                       </div>
@@ -298,7 +429,7 @@ export default function NewsPage() {
                       <h3>{article.title}</h3>
 
                       <p className="news-article-summary">
-                        {article.summary}
+                        {article.summary || "Sin resumen disponible."}
                       </p>
 
                       <Link
