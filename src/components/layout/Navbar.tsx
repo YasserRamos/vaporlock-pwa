@@ -4,6 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X, ChevronRight } from "lucide-react";
 import VaporlockLogo from "../ui/VaporlockLogo";
+import InstallPwaButton from "../pwa/InstallPwaButton";
 import "./css/navbar.css";
 
 const links = [
@@ -18,6 +19,7 @@ const links = [
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
+
     const closeMenu = () => setOpen(false);
 
     const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -32,6 +34,7 @@ export default function Navbar() {
                     <span className="navbar-brand-logo">
                         <VaporlockLogo />
                     </span>
+
                     <span className="navbar-brand-subtitle">
                         <span className="navbar-brand-dot" />
                         METRONIA <span>//</span> 2943
@@ -51,10 +54,14 @@ export default function Navbar() {
                     ))}
                 </div>
 
-                <Link to="/personajes" className="navbar-explore">
-                    <span>Explorar</span>
-                    <ChevronRight size={16} />
-                </Link>
+                <div className="navbar-actions">
+                    <InstallPwaButton />
+
+                    <Link to="/personajes" className="navbar-explore">
+                        <span>Explorar</span>
+                        <ChevronRight size={16} />
+                    </Link>
+                </div>
 
                 <button
                     type="button"
@@ -79,7 +86,9 @@ export default function Navbar() {
                         className="navbar-mobile"
                     >
                         <div className="navbar-mobile-inner">
-                            <p className="navbar-mobile-label">ÍNDICE DE ARCHIVOS</p>
+                            <p className="navbar-mobile-label">
+                                ÍNDICE DE ARCHIVOS
+                            </p>
 
                             {links.map((link, index) => (
                                 <motion.div
@@ -110,6 +119,10 @@ export default function Navbar() {
                                 Explorar personajes
                                 <ChevronRight size={18} />
                             </Link>
+
+                            <div className="navbar-mobile-install">
+                                <InstallPwaButton />
+                            </div>
                         </div>
                     </motion.div>
                 )}

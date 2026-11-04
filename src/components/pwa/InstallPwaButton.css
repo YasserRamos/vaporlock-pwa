@@ -1,0 +1,103 @@
+
+.pwa-install-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.pwa-install-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 40px;
+  padding: 0 16px;
+
+  color: #171717;
+  background: #ffdf35;
+  border: 3px solid #171717;
+  border-radius: 3px;
+
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  box-shadow: 4px 4px 0 #171717;
+
+  cursor: pointer;
+
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.pwa-install-button:hover {
+  color: #171717;
+  background: #fff4a3;
+  border-color: #171717;
+
+  box-shadow: 2px 2px 0 #171717;
+  transform: translate(2px, 2px);
+}
+
+.pwa-install-button:active {
+  background: #f5c900;
+  box-shadow: 0 0 0 #171717;
+  transform: translate(4px, 4px);
+}
+
+.pwa-install-button:focus-visible {
+  outline: 3px dashed #171717;
+  outline-offset: 5px;
+}
+
+.pwa-install-button svg {
+  flex-shrink: 0;
+  stroke-width: 2.8px;
+}
+
+.pwa-install-message {
+  position: absolute;
+  z-index: 100;
+  top: calc(100% + 12px);
+  right: 0;
+
+  width: max-content;
+  max-width: 280px;
+  padding: 11px 13px;
+
+  color: #171717;
+  background: #ffffff;
+  border: 3px solid #171717;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.5;
+
+  box-shadow: 5px 5px 0 #171717;
+}
+
+@media (max-width: 480px) {
+  .pwa-install-button {
+    min-height: 36px;
+    padding: 0 11px;
+    font-size: 0.7rem;
+    gap: 6px;
+  }
+
+  .pwa-install-message {
+    max-width: 240px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pwa-install-button {
+    transition: none;
+  }
+}

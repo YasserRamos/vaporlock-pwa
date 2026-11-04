@@ -301,3 +301,26 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+
+
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.navbar-mobile-install {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 14px;
+    margin-top: 12px;
+    border-top: 1px solid rgb(184 111 63 / 35%);
+}
+
+@media (max-width: 900px) {
+    .navbar-actions {
+        display: none;
+    }
+}
