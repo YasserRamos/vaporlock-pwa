@@ -9,7 +9,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import "../css/news.css";
+import "../css/news-list.css";
 
 type NewsStatus =
   | "loading"
@@ -434,7 +434,7 @@ export default function NewsPage() {
 
                       <Link
                         className="news-read-more"
-                        to={`/news/${encodeURIComponent(article.slug)}`}
+                        to={`/noticias/${encodeURIComponent(article.slug)}`}
                       >
                         LEER NOTICIA
                         <ArrowUpRight size={17} />

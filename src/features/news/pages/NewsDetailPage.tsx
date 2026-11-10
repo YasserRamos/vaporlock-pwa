@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   ArrowLeft,
   CalendarDays,
@@ -8,7 +8,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import "../css/news.css";
+import "../css/news-details.css";
 
 type NewsDetailStatus =
   | "loading"
@@ -37,6 +37,9 @@ interface NewsDetailState {
 
 const API_URL = (import.meta.env.VITE_API_URL ?? "").replace(/\/+$/, "");
 
+/**
+ * Valida la estructura recibida desde la API.
+ */
 function isValidNews(data: unknown): data is NoticiaApi {
   if (typeof data !== "object" || data === null) {
     return false;
@@ -59,6 +62,9 @@ function isValidNews(data: unknown): data is NoticiaApi {
   );
 }
 
+/**
+ * Formatea fechas para su presentación.
+ */
 function formatNewsDate(date: string): string {
   const parsedDate = new Date(date);
 
@@ -73,6 +79,9 @@ function formatNewsDate(date: string): string {
   }).format(parsedDate);
 }
 
+/**
+ * Mensajes de error HTTP.
+ */
 function getHttpErrorMessage(statusCode?: number): string {
   if (statusCode === undefined) {
     return "No fue posible conectar con el servidor. Comprueba tu conexión.";
@@ -100,6 +109,64 @@ function getHttpErrorMessage(statusCode?: number): string {
         ? "Ocurrió un error en el servidor."
         : "No se pudo recuperar la noticia.";
   }
+}
+
+/**
+ * Reconoce las líneas que representan encabezados.
+ *
+ * Convención:
+ * - Las frases cortas sin puntuación final son encabezados.
+ * - Las frases terminadas en punto, interrogación o exclamación son párrafos.
+ * - Las fechas completas se presentan como destacados.
+ *
+ * No requiere sintaxis Markdown en SQL Server.
+ */
+function renderNewsContent(content: string): ReactNode {
+  const lines = content
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  return lines.map((originalLine, index) => {
+    // Compatibilidad con publicaciones antiguas que tengan ##.
+    const line = originalLine.replace(/^#{1,6}\s+/, "");
+
+    // Fecha destacada.
+    const isDate = /^\d{1,2}\s+DE\s+[A-ZÁÉÍÓÚÜÑ]+\s+DE\s+\d{4}$/i.test(
+      line
+    );
+
+    if (isDate) {
+      return (
+        <div className="news-content-date" key={index}>
+          <span className="news-content-date-label">
+            FECHA DE LANZAMIENTO
+          </span>
+          <strong>{line}</strong>
+        </div>
+      );
+    }
+
+    // Encabezado: línea breve sin puntuación final.
+    const isHeading =
+      line.length <= 85 &&
+      !/[.!?;:]$/.test(line);
+
+    if (isHeading) {
+      return (
+        <h2 key={index}>
+          {line}
+        </h2>
+      );
+    }
+
+    // Texto normal.
+    return (
+      <p key={index}>
+        {line}
+      </p>
+    );
+  });
 }
 
 export default function NewsDetailPage() {
@@ -151,7 +218,7 @@ export default function NewsDetailPage() {
               Accept: "application/json",
             },
             signal: controller.signal,
-          },
+          }
         );
 
         if (response.status === 404) {
@@ -228,7 +295,7 @@ export default function NewsDetailPage() {
       <div className="news-grid-bg" aria-hidden="true" />
 
       <div className="news-container">
-        <Link to="/news" className="news-back">
+        <Link to="/noticias" className="news-back">
           <ArrowLeft size={17} />
           VOLVER A NOTICIAS
         </Link>
@@ -236,11 +303,16 @@ export default function NewsDetailPage() {
         {news.status === "loading" && (
           <section className="news-empty" role="status">
             <RefreshCw size={30} />
+
             <span className="news-empty-code">
               ARCHIVO // CONSULTANDO
             </span>
+
             <h3>CARGANDO NOTICIA.</h3>
-            <p>Recuperando la publicación desde los archivos de Metronia.</p>
+
+            <p>
+              Recuperando la publicación desde los archivos de Metronia.
+            </p>
           </section>
         )}
 
@@ -260,7 +332,7 @@ export default function NewsDetailPage() {
               La publicación solicitada no existe o ya no está disponible.
             </p>
 
-            <Link to="/news" className="news-read-more">
+            <Link to="/noticias" className="news-read-more">
               VOLVER AL ARCHIVO
               <ArrowLeft size={17} />
             </Link>
@@ -298,7 +370,9 @@ export default function NewsDetailPage() {
               <button
                 type="button"
                 className="news-read-more"
-                onClick={() => setRetryKey((current) => current + 1)}
+                onClick={() =>
+                  setRetryKey((current) => current + 1)
+                }
               >
                 REINTENTAR
                 <RefreshCw size={16} />
@@ -327,6 +401,7 @@ export default function NewsDetailPage() {
                 {publishedAt && (
                   <span>
                     <CalendarDays size={16} />
+
                     <time dateTime={publishedAt}>
                       {formatNewsDate(publishedAt)}
                     </time>
@@ -337,41 +412,55 @@ export default function NewsDetailPage() {
               </div>
             </header>
 
-            {imageUrl && !imageError ? (
-              <div className="news-detail-image">
-                <img
-                  src={imageUrl}
-                  alt={`Portada de ${noticia.titulo}`}
-                  onError={() => setImageError(true)}
-                />
+            <section className="news-detail-feature">
+              {imageUrl && !imageError ? (
+                <div className="news-detail-image">
+                  <img
+                    src={imageUrl}
+                    alt={`Portada de ${noticia.titulo}`}
+                    onError={() => setImageError(true)}
+                  />
 
-                <span className="news-image-code">
-                  VL // {String(noticia.pkNoticia).padStart(3, "0")}
-                </span>
+                  <span className="news-image-code">
+                    VL // {String(noticia.pkNoticia).padStart(3, "0")}
+                  </span>
+
+                  {noticia.resumen && (
+                    <div className="news-image-caption">
+                      <span className="news-image-caption-label">
+                        INFORME // RESUMEN
+                      </span>
+                      <p>{noticia.resumen}</p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="news-detail-image news-image-placeholder">
+                  <ImageIcon size={42} strokeWidth={1} />
+                  <span>IMAGEN NO DISPONIBLE</span>
+
+                  {noticia.resumen && (
+                    <div className="news-image-caption">
+                      <span className="news-image-caption-label">
+                        INFORME // RESUMEN
+                      </span>
+                      <p>{noticia.resumen}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="news-detail-content">
+                {renderNewsContent(noticia.contenido)}
               </div>
-            ) : (
-              <div className="news-detail-image news-image-placeholder">
-                <ImageIcon size={42} strokeWidth={1} />
-                <span>IMAGEN NO DISPONIBLE</span>
-              </div>
-            )}
-
-            {noticia.resumen && (
-              <p className="news-detail-summary">
-                {noticia.resumen}
-              </p>
-            )}
-
-            <div className="news-detail-content">
-              {noticia.contenido}
-            </div>
+            </section>
 
             <footer className="news-detail-footer">
               <span className="news-footer-kicker">
                 VAPORLOCK // 2943
               </span>
 
-              <Link to="/news" className="news-read-more">
+              <Link to="/noticias" className="news-read-more">
                 <ArrowLeft size={17} />
                 VOLVER A NOTICIAS
               </Link>

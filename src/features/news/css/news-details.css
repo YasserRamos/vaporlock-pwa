@@ -1,0 +1,796 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --vl-bg: #101211;
+  --vl-cream: #f1dfb8;
+  --vl-muted: #aaa99f;
+  --vl-copper: #bd7040;
+  --vl-orange: #ee9144;
+  --vl-teal: #28cfc2;
+  --vl-border: rgba(189, 112, 64, .42);
+}
+
+.news-page {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--vl-cream);
+  background:
+    radial-gradient(ellipse at 83% 10%, rgba(40,207,194,.065), transparent 34%),
+    radial-gradient(ellipse at 9% 42%, rgba(189,112,64,.055), transparent 38%),
+    var(--vl-bg);
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.news-grid-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: .13;
+  background-image:
+    linear-gradient(rgba(190,190,175,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(190,190,175,.07) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, #000, transparent 82%);
+}
+
+.news-container {
+  position: relative;
+  z-index: 1;
+  width: min(1420px, calc(100% - 72px));
+  margin-inline: auto;
+  padding: 22px 0 64px;
+}
+
+.news-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--vl-muted);
+  font: 600 .68rem "IBM Plex Mono", monospace;
+  letter-spacing: .1em;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+.news-back:hover { color: var(--vl-teal); }
+
+.news-file-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  color: var(--vl-orange);
+  font: 700 .65rem "IBM Plex Mono", monospace;
+  letter-spacing: .12em;
+}
+.news-file-label > span {
+  width: 7px;
+  height: 7px;
+  background: var(--vl-orange);
+  box-shadow: 0 0 9px rgba(238,145,68,.45);
+}
+.news-file-label b { color: var(--vl-teal); }
+
+.news-section-kicker {
+  display: block;
+  margin-top: 18px;
+  color: var(--vl-muted);
+  font: 600 .62rem "IBM Plex Mono", monospace;
+  letter-spacing: .15em;
+}
+
+.news-read-more {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 15px;
+  border: 1px solid var(--vl-copper);
+  background: rgba(189,112,64,.08);
+  color: var(--vl-cream);
+  font: 700 .64rem "IBM Plex Mono", monospace;
+  letter-spacing: .08em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+.news-read-more:hover {
+  background: var(--vl-orange);
+  color: #171513;
+}
+
+/* Loading / empty / error */
+.news-empty,
+.news-feedback {
+  border: 1px solid var(--vl-border);
+  background: #191c1d;
+}
+.news-empty {
+  display: flex;
+  min-height: 250px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  padding: 32px;
+  text-align: center;
+}
+.news-empty-icon {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  place-items: center;
+  border: 1px solid var(--vl-copper);
+  color: var(--vl-orange);
+}
+.news-empty-code,
+.news-http-code {
+  color: var(--vl-teal);
+  font: 700 .65rem "IBM Plex Mono", monospace;
+  letter-spacing: .13em;
+}
+.news-empty h3,
+.news-feedback h3 {
+  margin: 0;
+  color: var(--vl-cream);
+  font: 800 1.6rem "Barlow Condensed", sans-serif;
+}
+.news-empty p,
+.news-feedback p {
+  max-width: 620px;
+  margin: 0;
+  color: #b8b8af;
+  line-height: 1.7;
+}
+.news-feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 26px;
+  color: var(--vl-orange);
+}
+.news-feedback > div {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+}
+
+/* Full-width landscape publication card */
+.news-detail {
+  width: 100%;
+  max-width: 1320px;
+  margin: 24px auto 0;
+  overflow: hidden;
+  border: 1px solid rgba(189,112,64,.48);
+  background: #171a1a;
+  box-shadow: 0 18px 55px rgba(0,0,0,.22);
+}
+
+.news-detail-header {
+  padding: 25px clamp(22px, 3.2vw, 46px) 19px;
+  border-bottom: 1px solid rgba(189,112,64,.32);
+}
+
+.news-detail-title {
+  max-width: 1150px;
+  margin: 9px 0 14px;
+  color: var(--vl-cream);
+  font: italic 900 clamp(2.8rem, 5.3vw, 5.4rem)/.91 "Barlow Condensed", Impact, sans-serif;
+  letter-spacing: -.025em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.news-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 20px;
+  color: var(--vl-muted);
+  font: 600 .61rem "IBM Plex Mono", monospace;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+.news-detail-meta > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.news-detail-meta svg { color: var(--vl-orange); }
+
+/* Feature is a single landscape card: cover on top, text inside the same surface. */
+.news-detail-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, .92fr);
+  align-items: stretch;
+  margin: 22px;
+  border: 1px solid rgba(189,112,64,.48);
+  background: #111817;
+  min-height: 360px;
+}
+
+.news-detail-image {
+  position: relative;
+  min-width: 0;
+  min-height: 360px;
+  aspect-ratio: auto;
+  overflow: hidden;
+  background: #1d2928;
+  border-right: 1px solid rgba(189,112,64,.42);
+}
+
+.news-detail-image::before,
+.news-detail-image::after {
+  content: none !important;
+  display: none !important;
+}
+
+.news-detail-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  object-fit: cover;
+  object-position: center;
+  opacity: 1;
+  filter: saturate(.95) contrast(1.04);
+}
+
+.news-image-code {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  padding: 6px 8px;
+  border: 1px solid rgba(40,207,194,.5);
+  background: rgba(9,17,16,.88);
+  color: var(--vl-teal);
+  font: 700 .58rem "IBM Plex Mono", monospace;
+  letter-spacing: .1em;
+}
+
+.news-detail-image.news-image-placeholder {
+  display: flex;
+  min-height: 360px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--vl-copper);
+}
+.news-detail-image.news-image-placeholder > span {
+  color: var(--vl-muted);
+  font: 600 .62rem "IBM Plex Mono", monospace;
+  letter-spacing: .12em;
+}
+
+/* Summary is placed over the dark reserved strip in the artwork. */
+.news-image-caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  padding: 15px 18px 16px;
+  border-top: 1px solid rgba(40,207,194,.4);
+  background: rgba(8,17,16,.93);
+}
+.news-image-caption-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--vl-teal);
+  font: 700 .56rem "IBM Plex Mono", monospace;
+  letter-spacing: .13em;
+}
+.news-image-caption p {
+  margin: 0;
+  color: var(--vl-cream);
+  font-size: .9rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.news-detail-content {
+  min-width: 0;
+  padding: clamp(22px, 3vw, 38px);
+  color: #d0cec4;
+  font-size: .96rem;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  background:
+    linear-gradient(145deg, rgba(40,207,194,.035), transparent 45%),
+    #171d1c;
+}
+.news-detail-content p { margin: 0 0 1.2em; }
+.news-detail-content p:last-child { margin-bottom: 0; }
+.news-detail-content h2,
+.news-detail-content h3,
+.news-detail-content h4 {
+  margin: 1.5em 0 .55em;
+  color: var(--vl-cream);
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 800;
+  line-height: 1.12;
+  text-transform: uppercase;
+}
+.news-detail-content h2 { font-size: 1.9rem; }
+.news-detail-content h3 { font-size: 1.5rem; }
+.news-detail-content a {
+  color: var(--vl-teal);
+  text-underline-offset: 3px;
+}
+.news-detail-content strong,
+.news-detail-content b { color: var(--vl-cream); }
+.news-detail-content ul,
+.news-detail-content ol { padding-left: 1.4rem; }
+.news-detail-content li { margin: .4em 0; }
+
+.news-detail-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0 22px;
+  padding: 16px 0 20px;
+  border-top: 1px solid rgba(189,112,64,.34);
+}
+.news-detail-footer .news-footer-kicker {
+  color: var(--vl-orange);
+  font: 700 .62rem "IBM Plex Mono", monospace;
+  letter-spacing: .12em;
+}
+
+/* Desktop remains landscape. Stack only when the viewport is genuinely narrow. */
+@media (max-width: 760px) {
+  .news-container {
+    width: calc(100% - 28px);
+    padding-top: 16px;
+  }
+  .news-detail-header { padding: 21px 17px 16px; }
+  .news-detail-title { font-size: clamp(2.25rem, 10vw, 3.5rem); }
+  .news-detail-feature {
+    grid-template-columns: 1fr;
+    margin: 14px;
+  }
+  .news-detail-image,
+  .news-detail-image img,
+  .news-detail-image.news-image-placeholder {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border-right: 0;
+    border-bottom: 1px solid rgba(189,112,64,.42);
+  }
+  .news-image-caption { padding: 11px 13px; }
+  .news-image-caption p { font-size: .82rem; }
+  .news-detail-content {
+    padding: 21px 18px;
+    font-size: .91rem;
+    line-height: 1.75;
+  }
+  .news-detail-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-inline: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .news-file-label { font-size: .55rem; letter-spacing: .06em; }
+  .news-detail-title { font-size: 2.15rem; }
+  .news-detail-meta { font-size: .55rem; gap: 8px 12px; }
+  .news-detail-feature { margin: 10px; }
+  .news-image-caption p { font-size: .76rem; }
+  .news-detail-footer { margin-inline: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news-back,
+  .news-read-more { transition: none; }
+}
+
+
+/* =========================================================
+   VAPORLOCK NEWS DETAIL — LANDSCAPE DESKTOP ADAPTATION
+   Preserve the original vertical editorial flow:
+   header -> panoramic cover + summary -> article body -> footer.
+   No side-by-side image/content columns.
+   ========================================================= */
+
+/* The site navigation is fixed/sticky; keep the article clear of it. */
+.news-page {
+  padding-top: 68px;
+}
+
+.news-container {
+  width: min(1540px, calc(100% - 64px));
+  padding-top: 18px;
+}
+
+/* A wider publication card without changing its editorial order. */
+.news-detail {
+  width: 100%;
+  max-width: none;
+  margin-top: 20px;
+}
+
+/* Keep title/meta compact enough to let the cover lead the page. */
+.news-detail-header {
+  padding: 25px clamp(26px, 3.4vw, 54px) 20px;
+}
+
+.news-detail-title {
+  max-width: 1250px;
+  font-size: clamp(3.2rem, 5.1vw, 5.8rem);
+  line-height: .9;
+}
+
+/* Critical correction: one vertical flow, never a split panel. */
+.news-detail-feature {
+  display: block;
+  min-height: 0;
+  margin: 22px clamp(20px, 2.4vw, 36px);
+  border: 1px solid rgba(189,112,64,.48);
+  background: #111817;
+}
+
+/* Landscape banner across the complete card width. */
+.news-detail-image,
+.news-detail-image.news-image-placeholder {
+  display: block;
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  height: auto;
+  aspect-ratio: 2.35 / 1;
+  overflow: hidden;
+  border: 0;
+  border-bottom: 1px solid rgba(189,112,64,.42);
+  background: #1d2928;
+}
+
+.news-detail-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: 2.35 / 1;
+  object-fit: cover;
+  object-position: center 48%;
+}
+
+/* Keep the existing summary treatment attached to the cover. */
+.news-image-caption {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 15px clamp(18px, 2vw, 30px) 17px;
+  background: linear-gradient(
+    90deg,
+    rgba(7,16,15,.97),
+    rgba(7,16,15,.91) 72%,
+    rgba(7,16,15,.82)
+  );
+  border-top: 1px solid rgba(40,207,194,.48);
+}
+
+.news-image-caption p {
+  max-width: 1100px;
+  font-size: clamp(.88rem, 1vw, 1.02rem);
+  line-height: 1.45;
+}
+
+/* Article remains below the banner and uses the additional width.
+   A readable measure prevents excessively long text lines. */
+.news-detail-content {
+  width: 100%;
+  max-width: none;
+  padding: clamp(28px, 3vw, 46px) clamp(30px, 5.5vw, 88px);
+  font-size: clamp(.96rem, 1.05vw, 1.08rem);
+  line-height: 1.9;
+  background:
+    linear-gradient(110deg, rgba(40,207,194,.025), transparent 55%),
+    #171d1c;
+}
+
+.news-detail-content > * {
+  max-width: 1120px;
+}
+
+.news-detail-content p {
+  margin-bottom: 1.25em;
+}
+
+.news-detail-footer {
+  margin-inline: clamp(20px, 2.4vw, 36px);
+  padding: 18px 0 22px;
+}
+
+/* Medium desktop / tablet landscape */
+@media (max-width: 900px) {
+  .news-container {
+    width: calc(100% - 36px);
+  }
+
+  .news-detail-title {
+    font-size: clamp(2.7rem, 6vw, 4.4rem);
+  }
+
+  .news-detail-image,
+  .news-detail-image.news-image-placeholder,
+  .news-detail-image img {
+    aspect-ratio: 16 / 9;
+  }
+
+  .news-detail-content {
+    padding: 26px 30px;
+  }
+}
+
+/* Phone: retain the same vertical composition, with a 16:9 cover. */
+@media (max-width: 760px) {
+  .news-page {
+    padding-top: 58px;
+  }
+
+  .news-container {
+    width: calc(100% - 28px);
+    padding-top: 12px;
+  }
+
+  .news-detail {
+    margin-top: 16px;
+  }
+
+  .news-detail-feature {
+    display: block;
+    margin: 12px;
+  }
+
+  .news-detail-image,
+  .news-detail-image.news-image-placeholder,
+  .news-detail-image img {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .news-image-caption {
+    padding: 10px 12px 12px;
+  }
+
+  .news-image-caption p {
+    font-size: .82rem;
+  }
+
+  .news-detail-content {
+    width: 100%;
+    padding: 22px 18px;
+    font-size: .92rem;
+    line-height: 1.75;
+  }
+
+  .news-detail-footer {
+    margin-inline: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .news-page {
+    padding-top: 54px;
+  }
+
+  .news-container {
+    width: calc(100% - 20px);
+  }
+
+  .news-detail-header {
+    padding: 18px 14px 14px;
+  }
+
+  .news-detail-title {
+    font-size: 2.15rem;
+  }
+
+  .news-detail-feature {
+    margin: 9px;
+  }
+
+  .news-detail-content {
+    padding: 19px 15px;
+  }
+
+  .news-detail-footer {
+    margin-inline: 9px;
+  }
+}
+
+
+/* Final cover adjustment: YouTube-like panoramic crop, centered,
+   with a modest reduction in visible height. */
+.news-detail-image,
+.news-detail-image.news-image-placeholder {
+  aspect-ratio: 2.9 / 1 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+.news-detail-image img {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  aspect-ratio: 2.9 / 1 !important;
+  object-fit: cover !important;
+  object-position: 50% 50% !important;
+  transform: scale(1.025);
+  transform-origin: center center;
+}
+
+/* Keep the mobile version panoramic too, instead of reverting to portrait. */
+@media (max-width: 760px) {
+  .news-detail-image,
+  .news-detail-image.news-image-placeholder,
+  .news-detail-image img {
+    aspect-ratio: 2.45 / 1 !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .news-detail-image,
+  .news-detail-image.news-image-placeholder,
+  .news-detail-image img {
+    aspect-ratio: 2.25 / 1 !important;
+  }
+}
+
+
+/* Refinement: shorter cover and more deliberate editorial reading area. */
+.news-detail-image,
+.news-detail-image.news-image-placeholder {
+  aspect-ratio: 3.25 / 1 !important;
+}
+
+.news-detail-image img {
+  aspect-ratio: 3.25 / 1 !important;
+  object-position: center 50% !important;
+}
+
+/* Give the article body a designed reading measure rather than long,
+   generic full-width paragraphs. */
+.news-detail-content {
+  padding: clamp(24px, 2.6vw, 38px) clamp(28px, 4.2vw, 66px) !important;
+  font-size: clamp(.94rem, .98vw, 1.02rem) !important;
+  line-height: 1.82 !important;
+}
+
+.news-detail-content > * {
+  max-width: 1000px;
+}
+
+.news-detail-content p {
+  margin: 0 0 1.35em !important;
+}
+
+.news-detail-content p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.news-detail-content h2,
+.news-detail-content h3 {
+  position: relative;
+  margin: 1.8em 0 .7em !important;
+  padding-left: 14px;
+}
+
+.news-detail-content h2::before,
+.news-detail-content h3::before {
+  position: absolute;
+  top: .12em;
+  bottom: .12em;
+  left: 0;
+  width: 3px;
+  background: var(--vl-orange);
+  content: "";
+}
+
+@media (max-width: 760px) {
+  .news-detail-image,
+  .news-detail-image.news-image-placeholder,
+  .news-detail-image img {
+    aspect-ratio: 2.65 / 1 !important;
+  }
+
+  .news-detail-content {
+    padding: 21px 18px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .news-detail-image,
+  .news-detail-image.news-image-placeholder,
+  .news-detail-image img {
+    aspect-ratio: 2.4 / 1 !important;
+  }
+}
+
+
+/* =========================================================
+   SPACING FIX — NEWS DETAIL TOP SECTION
+   Removes the oversized gap below the main navigation and
+   tightens the publication header without changing layout.
+   ========================================================= */
+
+/* The navigation already occupies its own layout space.
+   Do not add another large offset above the news page. */
+.news-page {
+  padding-top: 0 !important;
+}
+
+/* Bring "Volver a noticias" closer to the navigation. */
+.news-container {
+  padding-top: 12px !important;
+  padding-bottom: 48px !important;
+}
+
+/* Reduce the gap between the back link and publication card. */
+.news-detail {
+  margin-top: 12px !important;
+}
+
+/* Compact publication header. */
+.news-detail-header {
+  padding: 19px clamp(22px, 3vw, 42px) 15px !important;
+}
+
+.news-detail-header .news-section-kicker {
+  margin-top: 12px !important;
+}
+
+.news-detail-title {
+  margin-top: 7px !important;
+  margin-bottom: 10px !important;
+  font-size: clamp(2.7rem, 4.5vw, 4.8rem) !important;
+  line-height: .91 !important;
+}
+
+.news-detail-meta {
+  gap: 8px 16px !important;
+}
+
+/* Remove excess top spacing around the banner. */
+.news-detail-feature {
+  margin-top: 14px !important;
+}
+
+/* Tablet and phone spacing. */
+@media (max-width: 760px) {
+  .news-container {
+    padding-top: 8px !important;
+    padding-bottom: 32px !important;
+  }
+
+  .news-detail {
+    margin-top: 10px !important;
+  }
+
+  .news-detail-header {
+    padding: 17px 17px 13px !important;
+  }
+
+  .news-detail-header .news-section-kicker {
+    margin-top: 10px !important;
+  }
+
+  .news-detail-title {
+    margin-top: 7px !important;
+    margin-bottom: 9px !important;
+    font-size: clamp(2.2rem, 8.5vw, 3.3rem) !important;
+  }
+}
