@@ -52,35 +52,17 @@ export default defineConfig({
         ],
 
         navigateFallback: 'index.html',
-        cleanupOutdatedCaches: true,
+
+        // Activación automática de nuevas versiones.
+        skipWaiting: true,
         clientsClaim: true,
+
+        // Limpia las cachés de versiones anteriores.
+        cleanupOutdatedCaches: true,
 
         runtimeCaching: [
           {
-            urlPattern: ({ url }) =>
-              url.pathname.startsWith('/api/'),
-
-            method: 'GET',
-
-            handler: 'NetworkFirst',
-
-            options: {
-              cacheName: 'vaporlock-api-cache',
-
-              networkTimeoutSeconds: 3,
-
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 7 * 24 * 60 * 60,
-              },
-
-              cacheableResponse: {
-                statuses: [200],
-              },
-            },
-          },
-
-          {
+            // Caché exclusiva para imágenes.
             urlPattern: ({ request }) =>
               request.destination === 'image',
 
@@ -103,8 +85,7 @@ export default defineConfig({
       },
 
       devOptions: {
-        enabled: true,
-        type: 'module',
+        enabled: false,
       },
     }),
   ],

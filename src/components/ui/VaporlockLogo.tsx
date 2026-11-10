@@ -16,7 +16,7 @@ export default function VaporlockLogo({
 
   return (
     <div className={`vaporlock-logo ${className}`}>
-      {!imageFailed && (
+      {imageFailed && (
         <img
           src={logoSrc || "/images/vaporlock-logo.png"}
           alt={alt}
@@ -24,7 +24,7 @@ export default function VaporlockLogo({
         />
       )}
 
-      {imageFailed && (
+      {!imageFailed && (
         <span className="block -rotate-2 text-xl font-black italic tracking-tight text-[#f4e8cf] sm:text-2xl">
             VAPOR<span className="text-[#e38a42]">LOCK</span>
           </span>
